@@ -1,0 +1,280 @@
+%% 1
+
+\begin{figure}[h!]
+  \captionsetup{singlelinecheck=off} 
+  \includegraphics[width=0.9\textwidth]{Figuras/explicadisconected.pdf}
+  \caption[test]{
+
+      
+    Explanation of the geometrical concepts used on our analysis.
+    In the Row \textbf{A} of figures we show
+    with an artificial example the concepts of connectedness and convexity.
+    The subfigure \textbf{A\ts{1}} shows
+    three sets, $A$, $B$, and $C$. $A$ fails to be convex because
+    it is convex,
+    and $C$ fails to be
+    be convex because it is made of two disconnected components.
+    In each of them is possible to draw a line
+    connecting two points inside the set that is not entirely inside the set.
+    In $B$ that is not possible, the set $B$ is convex in a mathematical sense.
+     In \textbf{A\ts{2}} we show the center of
+    mass for $A$ and $B$
+    taken as a whole, while for $C$ we break the set into each of the disconnected
+    components and calculate each CM separately. There is no guarantee that each
+    disconnected component would be convex, but as the resolution of the data is finite,
+    small components are more likely to
+    be convex. In figure \textbf{B} we show the procedure
+    with a frame of experimental data.
+    In \textbf{B\ts{1}} we separate the
+    data into three sets, Sources, Sinks, and Zeros.
+    We discard the Zeros and keep the active ones.
+    In Figure \textbf{B\ts{2}}
+    we take the Sink Set and separate it into disconnected components,
+    they are labeled from one to 25 in this particular example,
+    indicated by color
+    For each subset we sum over its mass, and 
+    considerate for the next step those who are above certain threshold. The
+    next step is shown in \textbf{B\ts{3}},
+    where we plot the Center of Mass for each of
+    such subsets. Deviations from convexity are tolerable,
+    as most of the mass is concentrated in the inner electrodes
+    of each set.
+  }
+  \label{disconnectedsets}
+\end{figure}
+
+%% 2
+
+%\begin{figure}[h!]
+%  \captionsetup{singlelinecheck=off} 
+%  \includegraphics[width=0.9\textwidth]{Figuras/lfpevocado01.pdf}
+%  \caption[test]{
+%    A set of frames showing the stimulus and posterior activity.
+%    The frame titled ``0 ms'' is just before the stimulus was
+%    made.  A diagram of the Granular and Pyramidal Layers is shown
+%    against the noise background. The black rectangle delimits the
+%    r.o.i. and the black arrow shows the site of stimulation in GD.
+%  }\label{lfpevocada}
+% \end{figure}
+
+%% Era la  3, pero ahora es la dos
+
+\begin{figure}[h!]
+   \centering
+   \includegraphics[width=0.9\textwidth]{Figuras/figure03.pdf}
+   \caption{
+      Electrode signal across some selected electrodes over the CA3 region.     
+      In subfigure (A)
+      the raw traces of the selected electrodes are shown, and in (B) the
+      csd traces come along for comparison. In this last subfigure the
+      vertical scale is in arbitrary units.
+      In subfigure (C)  the GD and CA3 structure are revealed
+      by the LFP measurement 8.5 ms after the stimulis,
+      their general shape recognizable.The selected electrodes are indicated
+      by black dots and the square encompasses the r.o.i. 
+   }
+  \label{trazselectevo}
+\end{figure}
+
+
+%% 4
+
+\begin{figure}[h!]
+  \captionsetup{singlelinecheck=off} 
+  \includegraphics[width=0.95\textwidth]{Figuras/lfpcsdcm_completa_evocada3R7.pdf}
+\caption[tu abueala]{
+  Comparison of the activity represented as LFP, CSD and CM.
+  The time after
+  stimulation in ms is shown in the central column for each row.
+  In this series of frames a relatively big patch of the electrodes
+  still appear saturated, but even so the CSD shows good localization
+  of the relevant deflections from the neutral or noise base signal.
+  The CM representation concentrates the locus of action even more.
+  The circular dots in the third column represent the center of mass
+  of coherent active subsets.
+}\label{lfpcsdcm}
+\end{figure}
+
+
+%% 5
+
+\begin{figure}[h!]
+   \captionsetup{singlelinecheck=off} 
+   \includegraphics[width=0.95\textwidth]{Figuras/lfpcsdcm_sub_evocada3R7.pdf} 
+   \caption[test]{
+     The same as previous figure, but focusing on the
+  region of interest, including the stratum pyramidale of CA3. A different
+  color scheme was chosen on the last column, so as to provide borders
+  that show how the disconnected components where chosen. 
+}\label{lfpcsdcmsub}
+\end{figure}
+
+
+%% 6, bueno, ahora es la 5!
+
+\begin{figure}[h!]
+   \captionsetup{singlelinecheck=off} 
+ \includegraphics[width=0.95\textwidth]{./Figuras/trayevocadasub.pdf}
+ \caption[test]{
+   The evoked trajectories in the r.o.i. We begin to track them
+    at the 2.6 ms mark, well after letting the saturation of the stimulus recede.
+    At 3ms a very clear sink trajectory is moving retrogradly towards CA2,
+    shepherd by two shorter source trajectories. At 5.6 a depolarization
+    trajectory starts, following almost the same path and presenting also its
+    two companions, ending around the 7.7ms timestamp. No significant
+    trajectories are observed after the 8.5ms mark. The triangular
+    marks indicate the last active point added to a trayectory, indicating
+    roughly the direction of movement.
+ }\label{evotracks}
+\end{figure}
+
+
+%% 7
+
+\begin{figure}[h!]
+   \centering
+   \includegraphics[width=0.9\textwidth]{Figuras/figure07.pdf}
+    \caption{
+      A selection of traces of the recordings for various electrodes.
+      In the subfigure A, the selected electrodes
+      are shown against the standard deviation of the recording of the
+      potential, which gives a good indication of the more active
+      sites, and therefore, of the structure of the hippocampus.
+      The electrode labeled ``a'' is over CA3 proximal, on the other
+      extreme ``h'' is in the middle of CA1.
+    }\label{trazfaci}
+\end{figure}
+
+
+%% 8
+
+\begin{figure}[h!]
+   \captionsetup{singlelinecheck=off} 
+   \includegraphics[width=0.95\textwidth]{Figuras/tablalfpcsdcm-facilitada.pdf}
+   % falta svg TOTAL
+   % Se la estas haciendo de emocion a Rafael con Esta.
+   % Dejala fermentar.
+\caption[test]{
+  Comparison of the activity represented as LFP, CSD and CM,
+  in the same style as fig. \ref{lfpcsdcm}, but for facilitated activity.
+  In this case the time counter starts at some moment around 80 ms. before the
+  onset of the burst of activity.
+ \komment{Observa como cambié los tiempos. Como tu sugerias quedaba raro, dado que
+    que la actividad comienza antes del milisegundo 90, asi que tendríamos
+    mucha actividad en tiempos negativos }.
+}\label{lfpcsdcmfaci}.
+\end{figure}
+
+%% 9 ahora 8
+
+\begin{figure}[h!]
+  \captionsetup{singlelinecheck=off}
+  \includegraphics[width=0.95\textwidth]{./Figuras/figure09.pdf}
+\caption[test]{
+ (A)The trajectories for  the facilitated activity, in
+  sequence of apparition around the burst of action.
+  The blue line indicates the location of the str. pyr. and the
+  orange one the location of the Dentate Gyrus. The zero has been chosen
+  as in figure \ref{lfpcsdcmfaci}. Sink trayectories are shown
+  as light blue, and Source as red. 
+  \\ (B) All the trajectories shown together.
+  \romment{¿En este cuadro se van añadiendo distancias?} \\
+  \komment{Pues si, es decir, se va viendo el desplazamiento.} \\
+  \romment{¿Van apareciendo nuevos origienes?} \\
+  \komment{Si, también}
+  \romment{ Hacer una figura siguendo UNA trayectoria de largo alcance.}
+  \komment{ Mientras no tengamos un criterio para ``enlazar'' trayectorias
+    más alla de la cercanía (que es el que uso), no tenemos trayectorias de
+    largo alcance. Aunque hay algunas de alrededor de unas 150 o 200 micras.}
+}\label{facitracks}
+
+\end{figure}
+
+
+%% ahora esta es la 9.
+
+\begin{figure}[h!]
+   \centering
+   \includegraphics[width=0.9\textwidth]{Figuras/figure10.pdf}
+    \caption{
+      LFP standard deviation and traces of the recordings for various electrodes.
+      In the subfigure (A), the selected electrodes
+      are shown against the standard deviation of the recording of the
+      potential. This is an indicator of the more active
+      sites, and therefore, of the structure of the stratum pyramidale.
+      The electrode labeled ``a'' is putatively over GD, while ``h''
+      is in the medial CA1.}\label{traz4ap}
+\end{figure}
+
+
+
+%% 10
+
+\begin{figure}[h!]
+   \captionsetup{singlelinecheck=off} 
+  \includegraphics[width=0.9\textwidth]{./Figuras/LFPvsCSD_4AP.pdf}
+  \caption[test]{
+    Comparison of LFP and CSD representations
+    at the moments of the epileptic burst. In the first row
+    we present the data as measured, no denoising or filtering has
+    been applied. The units of measurement are in $\muV{}$. In
+    the middle row a direct application of a difference operator
+    gives us the CSD. This sort of operators are very sensitive
+    to noise, in this case, spatial hard edges, which become
+    greatly exaggerated. In the third row we present the same
+    data after a Gaussian spatial filter ( Gaussian Blur) has
+    been applied. }\label{lfpycsd4ap}
+\end{figure}
+
+%% 11
+
+%% 12
+
+\begin{figure}[h!]
+   \captionsetup{singlelinecheck=off} 
+  \includegraphics[width=0.9\textwidth]{./Figuras/Fronteras2sigma.pdf}
+  \caption[test]
+    {The detection of disconnected components for the Sink and Source
+    Sets. We take the the threshold value as two times the
+    standard deviation of the whole data in CSD representation. In
+    the upper row the data without the Gaussian Blur filtering is shown.
+    Although the location of some of the active sets is clear, a lot of the
+    joint activity gets hidden under the spatial noise. In the lower
+    row we repeat the detection with the smoothed data. Large, coherent
+    patches of activity are clearly shown, and the structure of the
+    stratum pyramidale is apparent. 
+  }\label{csdfrontera}
+\end{figure}
+
+
+%% 13
+
+\begin{figure}[h!]
+   \captionsetup{singlelinecheck=off} 
+  \includegraphics[width=0.95\textwidth]{./Figuras/SeqTray4AP01.pdf}
+  \caption[test]{
+    The activity in the Center of Mass and Trajectories representation.
+    A single epileptic attack is shown from slightly before the onset until the
+    last wave of the attack. Sink and Source trajectories are shown in blue
+    and red, respectively. In order to not saturate the latter subfigures
+    we take a persistence value of 2 ms, meaning that we do not shown
+    trajectories 2 ms after they have ended.}\label{tray4ap}.
+ \end{figure}
+
+
+%% 14
+
+\begin{figure}[h!]
+  \centering
+ \captionsetup{singlelinecheck=off} 
+  \includegraphics[width=0.9\textwidth]{Figuras/figure14.pdf}
+  \caption[test]{
+    (A)LFP stratial Tissue, some samples. There are no discernible
+    structures. The apparent active set at the lower left corner
+    is an artifact due to some bubbles in the experiment.
+    (B) After 30 seconds of recording, no visible trajectories can be found. The minimum displacement criteria is not full-filed for most of the putative centers of mass.}
+  \label{cuadestriado}
+\end{figure}
+
+
+

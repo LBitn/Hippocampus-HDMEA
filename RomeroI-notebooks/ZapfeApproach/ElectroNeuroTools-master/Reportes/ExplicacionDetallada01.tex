@@ -1,0 +1,127 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+
+\title{Densidad de Fuentes de Corriente y Coordenadas generalizadas}
+
+
+\author{W. P. Karel Zapfe}
+
+\begin{document}
+
+\maketitle
+
+\section{La Señal Cruda}
+
+El aparato, el BioCAM 4096S, es un arreglo de 4096 electródos en un 
+cuadrángulo con 64 renglones y 64 columnas en un cuadrado de
+$(2.67 mm)^2$. Los electrodos permíten medir variaciones del orden
+de unos microvolts hasta aproximadamente 16 milivolts 
+en el potencial eléctrico de muestras colocadas sobre el arreglo. Cuando
+todos están registrando actividad, tenemos una frecuencia de muestreo
+de 7022 tomas por segundo. Cada electrodo tiene $21 \mu m$ de lado, lo
+que hace que sus dimensiones sean del mismo orden de magnitud que el 
+soma de una neurona piramidal típica. El aparato tiene, de acuerdo
+con sus fabricantes, una señal ruidosa de $26 \mu V$rms. Dicha señal
+está presente en todos los electrodos excepto en un par que se
+muestran saturados todo el tiempo en varios registros.
+
+Cuando una célula piramidal dispara se puede medir un cambio de potencial
+en el medio extracelular. Si tomamos medidas \emph{muy} cercanas al soma
+(menos de $25 \mu m$)
+y no hay mas influencias, este cambio puede ser de aproximadamente
+$-250\mu V$ \cite{Obien2015}. Poco después ocurre una repolarización
+y se observa una señal contraria de aproximadamente $+100\mu V$.
+Dado que el potencial decrece como el inverso de la distancia
+y es aditivo, nuestras espigas discernibles en la señal tienen tamaños mucho
+menores, pero claramente sobre el nivel de ruido.
+
+La actividad neuronal producirá una distribución diferente en las medidas
+de los electrodos cercanos, mientras que aquellos que se encuentren
+suficientemente alejados de las fuentes y sumideros de corriente
+percibiran mayoritariamente ruido y tendrán otra estadística.
+Esto nos permite separar los electrodos sobre los cuales
+se encuentren cuerpos densamente llenos de células piramidales y dendritas
+de aquellas regiones relativamente vacias. 
+
+
+
+\section{Limpiando la señal}
+
+Para obtener una señal \emph{limpia} tenemos que tomar en cuenta
+cual es nuestro propósito. Para realizar el estudio que está llevando a cabo
+Franco basta con poder identificar las espigas del ruido.
+Pero para poder obtener una densidad de fuentes de corriente 
+çesto no es suficiente.
+El procedimiento formal para obtener esta densidad, que denotaré siguiendo
+la tradición, por $\rho$, es calcular el \emph{Laplaciano} del potencial de
+campo. Esto es un operador diferencial (la suma de las dobles derivada 
+cartesianas), y por ende requiere una \emph{función suave} para actuar. 
+El Laplaciano es especialmente sensible al ruido, tanto así, que su
+función en procesamiento de señales es detectar \emph{bordes duros}.
+Esto es especialmente de interés para nosotros, ya que se usa
+justamente en la detección de bordes en imágenes bidimensionales digitales.
+El ruido es basicamente un monton de bordes duros en cada instante temporal.
+Estamos obligados, por ende, a filtrar todo el ruido que sea posible.
+
+\subsection{Quitando ruido}
+
+Una técnica de \emph{suavización} de una señal en función del tiempo
+ la convolución con una Gaussiana relativamente estrecha. Esto es en realidad
+un filtro pasabajos. El teorema de la convolución nos garantiza que esta
+convolución es equivalente a multiplicar la señal por una Gaussiana 
+en el dominio de las frecuencias, efectivamente aplastando todo aquello
+que se encuentre lejos del origen. El ancho efectivo (la tolerancia a 
+frecuencias altas) está dado por el inverso del parámetro $\sigma$ de
+la Gaussiana en el ámbito temporal. El ruido está acoplado con 
+las capacidades de máxima resolución de la máquina, así que una 
+Gaussiana relativamente delgada eliminará estás estructuras (véase fig. 
+\ref{Compara01}).
+
+\begin{figure}[h]
+\includegraphics[width=0.9\textwidth]{ComparaSuaveyCruda01.pdf}
+\caption{La señal de un electrodo partícular cruda y después de
+la convolución con una Gaussiana con ancho $\sigma=$. En la gráfica
+menor se aprecia el efecto a escala aumentada.
+}\label{Compara01}
+\end{figure} 
+
+
+
+\subsection{Suavizando la señal}
+
+La señal ya así obtenida tiene todavía el inconveniente
+de ser muy ``dura'' en el dominio espacial. Aunque $64\times 64$
+puntos de muestreo en tan poco espacio tenga una resolución
+alta en comparación con las estructuras fisiológicas, es baja
+para ``hacer cálculo''. La implementación directo del operador
+Laplaciano discreto en una retícula bidimensional produce
+efectos de borde muy notorios que ofuscarían la visualización
+de las areas con verdadera actividad. Es por ello que se
+desarollo un método de suavización de bordes en la  implementación
+del operador llamado ``filtro Gauss-Laplace''. Consiste en pasar
+un filtro Gaussiano por la imágen o señal primero, y luego el 
+operador Laplaciano discreto. Esta fue la ``segunda derivada'' que
+decidí implementar para buscar la densidad de fuentes de corrientes.
+Esto producirá un efecto de señal de potencial similar a 
+la de un campo apantallado, que es, hasta donde yo se,
+ adecuada para modelar iones disueltos en un  medio
+complicado.
+
+
+
+\section{Centros de Masa}
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

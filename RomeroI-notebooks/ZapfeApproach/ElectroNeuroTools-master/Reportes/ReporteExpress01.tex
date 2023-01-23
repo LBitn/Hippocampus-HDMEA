@@ -1,0 +1,138 @@
+\documentclass{beamer}
+
+
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{color}
+
+\decimalpoint
+
+\usefonttheme{serif}
+
+\newcommand{\dd}{\, \mathrm{d}}
+\newcommand{\xq}{\, \mathbf{x}}
+
+\begin{document}
+
+
+\begin{frame}
+  \frametitle{De la actividad evocada a las trayectorias de los CM}
+  Dado que la actividad evocada produce respuestas
+  \emph{perfectamente} acompazadas, podemos
+  promediar sobre varios eventos experimentales
+  a fin de tener una señal más limpia. 
+  \begin{center}
+   \includegraphics[width=0.8\textwidth]{PotencialesEvocados01.pdf} 
+  \end{center}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{¿Se vale promediar sobre CSD?}
+    Téoricamente sì: el CSDA es una operación lineal
+    (formas más sofisticadas pueden no serlo). Esto es:
+    
+\begin{equation}
+ \langle CSD(\phi) \rangle = CSD (\langle \phi \rangle)
+\end{equation}
+
+\begin{center}
+  \begin{tabular}{cc}
+    \includegraphics[width=0.5\textwidth]{CSDEvocado-Trancazo_1-0177.png} &
+    \includegraphics[width=0.5\textwidth]{CSDEvocado-Promedio-0177.png} 
+  \end{tabular}
+\end{center}
+    
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{No podemos \emph{``cerar''} los canales saturados}
+  Un criterio simple nos dice cuando un canal no registro nada.
+
+  El ataque usual era poner ese canal en ceros, pero al derivar
+  nos produce un efecto de borde muy grande.
+  
+\begin{center}
+  \begin{tabular}{cc}
+    \includegraphics[width=0.4\textwidth]{LFPEvocado_1R4-Promedio-177.png} &
+    \includegraphics[width=0.4\textwidth]{CSDEvocado-Promedio-0177.png} 
+  \end{tabular}
+\end{center}
+Solución: tenemos que hacer un promedio sobre la vecindad local
+para cada canal saturado, en cada cuadro.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{¿Promedio de Trayectorias?}
+Usando normalización sobre la longitud de arco, el
+promedio de varias curvas esta bien definido.
+\begin{center}
+\includegraphics[width=0.5\textwidth]{PromedioSobreUnaTrayectoria01.pdf}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{¿Promedio sobre los Centros de Masa?}
+  Si el centro de masa fuera sobre todo el espacio, una
+  vez más sería válido por linealidad. ¡La
+  detección de componentes disjuntos nos puede echar todo a
+  perder!
+\begin{center}
+ \includegraphics[width=0.5\textwidth]{promedioComponentesDisjuntos01.pdf}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Ceros de funciones similares}
+  \frametitle{Posible remedio:}
+  Si tenemos una familia de funciones \emph{suficientemente cercanas}
+  podemos garantizar
+  que sus ceros son deformaciones pequeñas unos de otros. 
+\begin{center}
+ \includegraphics[width=0.7\textwidth]{FuncionesRegularesCeros01.png}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Funciones similares}
+  La actividad evocada (ya sea LFP o CSD) tal vez puede ser descompuesta
+  en una parte estrictamente determinista y una parte \emph{ruidosa}
+  o \emph{espontanea}. La parte determinista determinará las propiedas globales de la
+  función y será cercana al promedio.
+\begin{center}
+ \includegraphics[width=0.9\textwidth]{FuncionesRegulares01.png}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Funciones similares}
+  La actividad evocada (ya sea LFP o CSD) tal vez puede ser descompuesta
+  en una parte estrictamente determinista y una parte \emph{ruidosa}
+  o \emph{espontanea}. La parte determinista determinará las propiedas globales de la
+  función y será cercana al promedio.
+\begin{center}
+ \includegraphics[width=0.9\textwidth]{FuncionesRegulares01.png}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Inspección visual}
+\begin{center}
+  \includegraphics[width=0.93\textwidth]{NivelesEncimados3experimentos01.png} 
+ % \includegraphics[width=0.43\textwidth]{NivelesEncimados-3-01.png} 
+\end{center}
+  %\includegraphics[width=0.33\textwidth]{NivelesEncimados-4-01.png} 
+
+\end{frame}
+
+
+
+\end{document}

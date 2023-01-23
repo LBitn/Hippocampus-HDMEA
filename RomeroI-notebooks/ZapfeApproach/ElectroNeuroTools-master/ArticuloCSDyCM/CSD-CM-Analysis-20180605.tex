@@ -1,0 +1,94 @@
+CSDA
+
+ 
+As it is mentioned in the section ``data analysis''  above, the first step is to detect the electrodes that are failing
+because of saturation or lack of detection. The criterion is that a electrode
+which shows less standard deviation than the one expected by the noise, then
+the data from that channel is discarded. In this section our threshold for
+discarding them was if the standard deviation was less than one half of the
+average from the standard deviations of the background noise.
+Every channel that was discarded was replaced by the instantaneous average
+of its 8 neighbours (discarding some of them if they were also saturated).
+
+In order to obtain the CSD from the LFP we first had to remove the excessive
+hard edges we smoothed each frame with a Gaussian Filter with a half-width of
+42 micrometers (a center to center interelectrode distance). At this moment
+the numeric data was ready for the CSDA. We follow the usual ohmic, isotropic,
+and homogeneous assumption about the extracellular medium, so that
+the CSD is expressed by the following relation:
+
+**** Poner ecuación de CSD-definition aquí *****,
+
+where I_m is the CSD, \sigma is the conductivity tensor, and V is the
+LFP.
+
+Due to the high spatial resolution of the BrainWave BioCam, we can perform a very
+precise CSDA with a finite difference method. The best suited tool for this
+is the following numerical Laplacian operator:
+
+*****Poner la ecuación del operador Laplaciano-Lindberg aquí. *****
+
+In two dimensional rectangular grid data,
+this operator is as close as possible to a rotational invariant operator
+(Lindberg, 1990). This reduces as much as possible the effects of the orientation
+of the grid of electrodes in respect to the orientation of the pyramidal
+neurons, providing us with more sensitive patches of sinks and sources,
+and reducing the effect of ``crosses'' that occurs with non-convex
+operators. The procedure is to apply this operator
+ as convolution to each frame (each time step) of the data. To
+deal with the border, we padded the data with a duplicate of the first
+and last rows and columns and then discarded the resulting channels
+after the convolution was made. 
+
+
+CMA (Center of Mass Analysis)
+
+At each time frame, the data in the CSD representation can be classified in 
+three different sets: Sinks, Sources, and Neutral. Due to the presence of
+noise, the Neutral set has to be defined on empirical grounds. We calculated
+the average extrema of the noise over the channels, and set the larger of
+them as our threshold value for the neutral set. This results in a band
+that separates the Sinks and the Sources set by a thicker neutral set.
+
+These two active sets (the sinks and sources) are made of disjoint patches, that
+is, the sets are disjoint. We used a single pass algorithm
+(Vincent and Soille, 1991) to detect each connected component from each set. This gives
+us a formal labeling of each patch at each instant of time. Each such component is
+connected in itself but disconnected to the other components of the corresponding set.
+So each component lends itself to the obtaintion of its center,
+a formal point to which we can
+assign the action averaged over space, without mixing information from
+distant units. We use the common definition of ``Center of Mass'', i.e. a
+vector average of the instantaneous CSD over all the channels that
+form a patch:
+
+*** poner ecuación de Centro de Masa aqui ****,
+
+where the angle brackets denote averaging over the connected component, m
+is the absolute instantaneous value of the CSD at each channel, and the x_{k,j} are the coordinates
+of the channel. The index j runs through the elements of the patch.
+Our surrogate data now are the corresponding ``centers'' and
+their total ``signed mass''
+(the sum of all the contributing channels CSD to each center).
+
+
+
+Trajectories
+
+To obtain the trajectories we start with the Center of Mass Data at
+the first  time frame. We perform the following
+steps for sinks and sources separately. We  compare the locations of all
+the Centers at one frame with those of the following frame, and we select the closer to
+each one as its continuation, if its total density is above a certain
+threshold, and if not, we discard it. Proceeding in such a manner, frame
+by frame, we can obtain the putative trajectories of action of the
+relevant patches. A trajectory ends when there are no centers closer
+to the last calculated center point, or are to low in intensity to consider.
+For the animation, we selected only the trajectories that had more
+than 5 steps of existence and their average value was above certain
+threshold. This was done in order to not saturate the image with too
+many small trajectories. Analysis of the whole data and formal details
+will be presented in a following paper.
+
+
+

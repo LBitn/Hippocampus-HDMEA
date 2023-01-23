@@ -1,0 +1,172 @@
+\documentclass{beamer}
+
+
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{color}
+
+\decimalpoint
+
+\usefonttheme{serif}
+
+\newcommand{\dd}{\, \mathrm{d}}
+\newcommand{\xq}{\, \mathbf{x}}
+
+\begin{document}
+
+
+\begin{frame}
+  \frametitle{De las medidas eléctricas a lo subyacente:} 
+  \begin{equation}
+    \varphi(\xq)
+    =\int \frac{1}{4\pi\epsilon}
+    \frac{\rho(\xq')}{|\xq-\xq'|} \dd^3 \xq'  
+  \end{equation}
+  \begin{center}
+  \begin{tabular}{ccc}
+   \textcolor{red}{LFP} & 
+   \includegraphics[width=0.4\textwidth]{Decaimiento01.pdf} &
+   \textcolor{blue}{CSD}
+  \end{tabular}
+  \end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Del Potencial Local a la Densidad de Fuentes de Corriente} 
+El operador Laplaciano formalmente invierte la expresión para
+el potencial eléctrico (medio uniforme e isotrópico).
+\begin{equation}
+  -\nabla^2\phi \propto \rho
+\end{equation}
+\begin{equation}
+I=\partial_t \rho= - \rho \cdot \sigma/\epsilon 
+  \end{equation}
+\ldots pero el op. Laplaciano es una idealización:
+\begin{equation}
+  \nabla^2 f (\xq) =\lim_{\varepsilon \to 0}
+  \frac{\sum_k f(\xq+\varepsilon_k)+ f(\xq-\varepsilon_k)-2 f(\xq)}
+       {\varepsilon^2}  
+\end{equation}
+\begin{flushright}
+  {\tiny Nicholson \emph{et} Freeman , J.   Neurophys. 38, 356 (1975)\\
+         Bédard \emph{et} Destexhe, PRE 84, 041909 (2011) }
+\end{flushright}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Un Laplaciano Numérico}
+  \begin{equation}
+    \nabla^2_{n}=2/3
+    \begin{pmatrix}
+      0 & 1 & 0 \\
+      1 & -4 & 1 \\
+      0 & -4 & 0    
+    \end{pmatrix}
+    +1/3
+    \begin{pmatrix}
+      0.5 & 0 & 0.5 \\
+      0 & -2 & 0 \\
+      0.5 & 0 & 0.5    
+    \end{pmatrix}
+  \end{equation}
+  \begin{center}
+  \begin{tabular}{cc}
+    \includegraphics[width=0.4\textwidth]{LFP-cb-716.png} &
+    \includegraphics[width=0.45\textwidth]{CSD_SeminarioJunio-712.png}    
+  \end{tabular}
+  \end{center}
+\begin{flushright}
+  {\tiny Lindberg, PAMI, 90, 234 (1990)}   
+\end{flushright}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Una aproximación \emph{inversa}: iCSDA, kCSDA}
+    \begin{align}
+    \varphi(\xq)
+    & =\int \frac{1}{4\pi\sigma}
+    \frac{I(\xq')}{|\xq-\xq'|} \dd^3 \xq' \\
+    & \approx \sum_j \frac{1}{4\pi\sigma}
+    \frac{I(\xq_j)}{|\xq-\xq_j|} |\Delta \xq|     
+  \end{align}
+    Esto puede ponerse como una transformación lineal:
+\begin{equation}
+    \phi_k=\sum_j F_{jk} I_j
+\end{equation}
+Donde $F$ contiene suposiciónes sobre la distribución, e.g.
+\begin{equation}
+  F_{jk}=\iiint_{\xq_k} \dd x \dd y \dd z
+\frac{H(z)}{4\pi\sigma \sqrt{(x-x_j)^2+(y-y_j)^2+z^2}} 
+\end{equation}
+\end{frame}
+
+\begin{frame}
+  \frametitle{iCSDA, kCSDA II}
+  \ldots y sólo tendriamos que invertir $F$ para obtener $I$
+  \begin{equation}
+    I_m=F^{-1}\phi 
+  \end{equation}
+  Esto requiere resolver $n\times n$ integrales, cada una con
+  $n\times n$ contribuciones, y luego invertir la matriz, que es una operación
+  que crece como $n^3$ \ldots
+  Si nos va bien, esta operación crece como $O(n^7)$.
+
+  Resuelta \emph{en principio}.
+
+ \begin{flushright}
+  {\tiny  Łesky \emph{ et all}, Neuroinform, 9, 401 (2011) \\
+      Pettersen \emph{et all} , JNM  154, 116 (2011) \\
+      Potworowsky \emph{et all}, Neur. Comp. 24, 541 (2012). }
+  \end{flushright}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Un cero bien localizado.} 
+Tanto en la densidad de cargas, como en la densidad de fuentes de corriente
+hay una distinción clara entre \emph{pozos} y \emph{fuentes}.
+No es el caso para el LFP, que mide las cosas a partir de una ``tierra''
+arbitraria. 
+\begin{center}
+    \includegraphics[width=0.75\textwidth]{CSD_SeminarioJunio-cb-732.png}
+\end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Promedios Vectoriales o \emph{Centros de Masa}}
+  \begin{equation}
+    \langle \xq(t) \rangle=\sum_k m(\xq_k)\xq/\sum_k m(\xq_k)
+  \end{equation}
+  
+  \begin{center}
+    \includegraphics[width=0.75\textwidth]{ImagenManjarrez01.jpg}
+  \end{center} 
+  
+ \begin{flushright}
+  {\tiny  Manjarrez \emph{ et all}, Brain Research, 1145, 239 (2007) \\
+      Chao \emph{ et all}, Neuroinformatics, 3, 263 (2005) }
+  \end{flushright}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Promedios vectoriales o \emph{Centro de Masa}} 
+Tanto en la densidad de cargas, como en la densidad de fuentes de corriente
+hay una distinción clara entre \emph{pozos} y \emph{fuentes}.
+\begin{center}
+  \begin{tabular}{cc}
+    \includegraphics[width=0.35\textwidth]{DiagramaCAetDGCSDEspanol01.png}   &
+    \includegraphics[width=0.55\textwidth]{CSD_CM_SeminarioJunio-732.png}
+  \end{tabular}
+\end{center}
+  
+\end{frame}
+
+
+
+\end{document}

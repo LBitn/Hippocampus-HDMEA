@@ -1,0 +1,116 @@
+\documentclass{article}
+
+%\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{amsmath, amssymb}
+
+\usepackage{graphicx}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+
+
+\setmainfont[Ligatures=TeX]{Oldstyle HPLHS}
+
+\newcommand{\Jd}{\mathbf{J}}
+\newcommand{\EF}{\mathbf{E}}
+\newcommand{\cond}{\boldsymbol{\sigma}}
+\DeclareMathOperator{\diver}{div}
+\DeclareMathOperator{\grad}{grad}
+
+\title{CSDA and Vector Averaging tracking at the Cornu Amonis}
+\author{Laboratorio 19, CINVESTAV}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Vector Averaging, also called sometimes ``Center of Mass Analysis'', has
+been used to track centers of 
+neuronal activity from electrophysiological recordings. 
+Here we propose various refinaments of the idea and apply the techniques
+to high density data recorded from the rat hipocampus. 
+\end{abstract}
+
+
+\section{Introduction}
+
+Vector Averaging or Center of Mass techniques have been used to follow
+the tracks or paths of neural activity in electrophysiological
+measurements corresponding to different experiments 
+\cite{ Abbot94, Chao05, Manjarrez07, Xiong07}. The central
+idea is to regard recording cites as vectors of an Euclidian space,
+and then calculate an average using the recorded data in some
+way as the wheight of each vector. Starting with Abbott et Salinas 
+\cite{Abbot94}, the usual ``mass'' where the spikes 
+counted over a time window as their mass, and called their
+vector average the Center of Activity (eg. \cite{Demas03, Chao05}). 
+Manjarrez et al. \cite{Manjarrez07},
+on the other hand, used the positive local field potential after choosing
+an adecuate zero (ground) value.  
+ 
+
+
+\section{Methods}
+
+We record the LFP from slices of the rat's hipocampus bla bla bla.
+
+The electrophysiological data is exported as a three dimensional array
+containing the EEG recording at each lattice cite and at each instant
+of time, measured in $\mu V$. We proced to obtain the CSD as follows.
+
+The data is smoothed in the temporal dimension 
+ with a Gaussian Low Pass filter, which
+gets rid of the noice induced by the line feed. Then,  with a rotational
+invariant Gaussian blur (a convolution with a Gaussian Matrix), we
+smooth the data spatialy, as to minimize the cross efects due to the 
+geometry of the measuring MEA. Due to the high spatial resolution 
+that the BIOCam 4096, has, a discrete Laplacian operator is enough to
+obtain the CSD, without need to use more sofisticated techniques such as
+iCSDA \cite{Leski2011}. The better suited Discrete Laplacian is also the
+one which minimizes the effect of the rectangular grid. It has been shown
+by Lindberg \cite{Lindberg90} that the following expression gives the 
+best approximation to a rotational invariant Laplacian:
+\begin{equation}
+\nabla^2_{disc}=(2/3)\begin{pmatrix}
+0 & 1 & 0 \\
+1 & -4 & 1 \\
+0 & 1 & 0 
+\end{pmatrix}+(1/3)
+\begin{pmatrix}
+1/2 & 0 & 1/2 \\
+0 & -2 & 0 \\
+1/2 & 0 & 1/2
+\end{pmatrix} 
+\end{equation}
+The convolution with this matrix is well defined everywhere except at the
+edges. There  we extend the nearest recording to obtain a reasonable 
+aproximation for the CSD. 
+
+The sets of all sources (converely, sinks) where the lattice points
+with an CSD greater (lower) than 0.01 a.u. This threshold is 
+well below the noice level of the data but high enough to adecuatelly
+establish significant border between the sets.
+
+Then we proceed to separate the disjoint components of each of the sets
+using 8-neighbourhoods (each recording cite is considered to be connected
+with its 8 closer neighbours) and a simple pass algorithm 
+\cite{Vincent91}. Once that the list of disjoint components is complete,
+we compute Vector Average for each component using the absolute value
+of the CSD as mass. This produces a ``Center of Mass'' which is clearly
+distinct for each activity cite and type and which is close to the
+recording cites where the activity is measured. 
+
+The next step is to concatenate the Center of Mass at each instant with
+the most probable continuation at the next timestep, in order to obtain
+a track of activity. 
+
+
+\bibliographystyle{plain}
+\bibliography{BiblioReportes01}
+
+
+
+\end{document}

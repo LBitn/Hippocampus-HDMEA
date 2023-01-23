@@ -1,0 +1,15 @@
+Medidas del MEA:
+
+Modelo 4096S
+
+area del array 3mm x 3mm
+área de trabajo 2.67mm x 2.67mm
+
+Electrodo: 21 \mu m cuadrados.
+Distancia entre Electrodos 42 \mu de centro a centro.
+
+Nivel de Ruido 26 \mu V rms.
+
+
+
+

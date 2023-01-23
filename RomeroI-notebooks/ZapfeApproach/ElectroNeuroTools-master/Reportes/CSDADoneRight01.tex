@@ -1,0 +1,305 @@
+\documentclass{article}
+
+%\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{amsmath}
+
+\usepackage{graphicx}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+
+
+\setmainfont[Ligatures=TeX]{Oldstyle HPLHS}
+
+\newcommand{\Jd}{\mathbf{J}}
+\newcommand{\EF}{\mathbf{E}}
+\newcommand{\cond}{\boldsymbol{\sigma}}
+\DeclareMathOperator{\diver}{div}
+\DeclareMathOperator{\grad}{grad}
+
+\title{CSDA in 2D slices of the hippocampus \emph{done right}}
+\author{W. P. K. Zapfe, Whoever Helps}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+As high density electrode arrays become cheaper and more common, 
+electrophysiological measurements of activity in neural tissue approach
+the scale of the underlying structures. The electrodes measure
+directly the Local Field Potential, but it is aknowledged that the
+Current Source Density has more resolving power, as it points
+more accurately to the actual sources and sinks. Nevertheless,
+the role of the conductivity tensor is rarely taken into account
+in the derivation of the CSD, which could potentialy lead to
+spurious distributions of the sources and sinks and deformation
+of their structure, obfuscating the precise locus of the
+poles underneath. In dense neural tissue, such as the
+stratum piramidale layer of the hippocampus, clear
+deviations from average conductivity have been detected. 
+Here we show a possible qualitative treatment of the conductivity
+across the layers of the hippocampus, an examplification
+with two toy models and a numerical implementation with
+high density experimental data.
+\end{abstract}
+
+
+\section{Introduction}
+
+As Bédard and Destexhe pointed out in \cite{Bedard11}, the CSDA, as it
+is performed usually, rests on
+assumptions which could leave important features out. One of these 
+assumptions is that the extracellular medium has very homogeneous 
+electrical propierties. This has been shown to not be
+the case for dense neuronal layers such as the piramidal
+strata in the hippocampus \cite{Holsheimer87, Lopez01, TrevinoPersonal}.
+The evidence mostly points out that resistivity grows 
+considerably around thick somatic layers, or conversely, that
+the conductivity drops considerably there. In ohmic (linear) media,
+we expect the following relation to hold:
+\begin{equation}
+\Jd=\cond \EF,
+\end{equation}
+that is, the current density $\Jd$ is the result of the
+local electric field $\EF$ and the local conductivity, $\cond$.
+We usually take that last quantity as an homogeneous, isotropic,
+factor, at least over the scales that we are interested in.
+The conductivity in inhomogeneous media can be rarely
+simplified to a constant, as it can depend both from the direction
+of the fields and currents, and vary from point to point. 
+Then the above expression is just shorthand notation for the
+explicit  \emph{tensorial} relationship:
+\begin{equation}
+  \begin{pmatrix}
+    J_x \\
+    J_y \\
+    J_z
+  \end{pmatrix}
+  =
+   \begin{pmatrix}
+     \sigma_{xx}E_x+ \sigma_{xy}E_y+\sigma_{xz}E_z \\
+     \sigma_{xy}E_x+ \sigma_{yy}E_y+\sigma_{yz}E_z \\
+     \sigma_{xz}E_x+ \sigma_{yz}E_y+\sigma_{zz}E_z \\
+  \end{pmatrix},
+\end{equation}
+where we allready used the fact that $\cond$ is simmetric when
+expressed on Cartessian coordinates.
+We assume that the electric field can be obtained as the
+gradient of the LFP, $\phi$:
+\begin{equation}
+  -\grad \phi=\EF
+\end{equation}
+This LFP is the quantity that the microelectrode arrays (MEAs) permits us
+to measure on the extracelular medium.
+To obtain the sources and sink densities, we use Gauss Divergence Theorem,
+stated in differencial form:
+\begin{equation}
+\nabla \cdot \Jd =I_m
+\end{equation}
+We perform the divergence operation on the current density, not
+on the electric field. Only when the medium is isotropic and homogeneous
+we can be sure that both operations coincide within a positive factor.
+
+Here we shall investigate
+posible influence of changing conductivity on current density
+($\Jd$) and current source density ($I_m$). 
+
+
+\section{Analytical  derivation of the CSD}
+
+
+In experiments of this sort performed on hippocampus slices, the
+MEAs permit us to measure a sample of LFP over discrete points on a
+two dimensional lattice, so we do not have possibility of
+calculating currents or electric fields on the third dimension of space.
+The slices of the hippocampus are very thin, and we do not consider
+the posibility of current going outside the neural tissue sample (in one
+direction there is air and on the other the MEA), so we
+can reduce our formalism to two dimensional space. We then take
+$J_z=0$ and use $(x,y)$ as a cartesian coordinate system aligned
+with the MEA. Then the \emph{flat} current density  is:
+\begin{equation}
+  \begin{pmatrix}
+    J_x\\
+    J_y
+  \end{pmatrix}  =
+  \begin{pmatrix}
+    \sigma_{xx}E_x+\sigma_{xy}E_y \\
+    \sigma_{xy}E_x+\sigma_{yy}E_y 
+  \end{pmatrix}=
+  \begin{pmatrix}
+    -\sigma_{xx}\partial_x \phi -\sigma_{xy}\partial_y \phi \\
+    -\sigma_{xy}\partial_x \phi -\sigma_{yy}\partial_y \phi 
+  \end{pmatrix}.
+\end{equation}
+The divergence, in cartesian coordinates, yields:
+\begin{equation}\label{csd2dexp}
+  I_m=\partial_x J_x+\partial_y J_y=
+  -\partial_x( \sigma_{xx}\partial_x \phi +\sigma_{xy}\partial_y \phi)
+  -\partial_y( \sigma_{xy}\partial_x \phi +\sigma_{yy}\partial_y \phi). 
+\end{equation}
+Each one of the terms of the right hand side of eq. \ref{csd2dexp}
+has the form
+\begin{multline}
+  \partial_j (\sigma_{jj}\partial_j\phi) +\partial_j (\sigma_{jk}\partial_k \phi)
+  =  \\
+  (\partial_j \sigma_{jj})(\partial_j\phi) +\sigma_{jj}\partial_j^2\phi +
+  (\partial_j \sigma_{jk})(\partial_k \phi)+\sigma _{jk}\partial_j\partial_k \phi.
+\end{multline}
+The complete expression is cumbersome to write, but it is important to
+have \emph{full} expansion in order to make the numerical considerations
+in what follows.
+\begin{equation}\label{Imcart}
+  \begin{split}
+  -I_m= & (\partial_x \sigma_{xx}) (\partial_x \phi) +
+  (\partial_y \sigma_{yy}) (\partial_y \phi)\\
+& +(\partial_x \sigma_{xy}) (\partial_y \phi) +(\partial_y \sigma_{xy}) (\partial_x \phi)\\
+& + \sigma_{xx} \partial_x^2 \phi + \sigma_{yy} \partial_y^2 \phi\\
+& + 2\sigma_{xy} \partial_x\partial_y \phi. 
+\end{split}
+ \end{equation}
+  
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}[t]{0.20\textwidth}
+\includegraphics[width=\textwidth]{DiagramaCAetDG02.pdf}
+\caption{}
+\label{diagCA}
+\end{subfigure}
+\quad
+\begin{subfigure}[t]{0.33\textwidth}
+\includegraphics[width=0.67\textwidth]{DiferentialCoordinates01.pdf}
+\caption{}
+\label{loceig}
+\end{subfigure}
+\begin{subfigure}[t]{0.20\textwidth}
+\includegraphics[width=\textwidth]{PseudoCoordinates01.pdf}
+\caption{}
+\label{pseudocor}
+\end{subfigure}
+\caption{\ref{diagCA}) A diagram showing the position of
+the hippocampus slice over the MEA. \ref{loceig}) 
+A tangent space basis along the
+eigenvectors of $\cond$. The red vectors indicate the
+Cartesian Coordinates aligned with the MEA latice. 
+\ref{pseudocor}) A putative local coordinate system spawned by the 
+eigenvectors $(t,a)$ at every point of intereset. 
+ }\label{diagdif}
+\label{esquemas01}
+\end{figure}
+
+
+This expressions may be regardes as inescesarily long, as the 
+$\cond$ tensor, being a real symmetric tensor, can be represented
+in local coordinates which diagonalize it. Those coordinates have
+physical meaning, as they are the resolving directions in which
+conductivity behaves differently and denote some underlying structure
+in the studied material. The usual assumption is that 
+the conductivity tensor is isotropic but not homogeneous, and it 
+changes along the apical direction, and not along the 
+differentiated strata (e.g. stratum pyramidale, stratum granolosum).
+Let us suppose that this is approximately correct, and that very close
+to the stratum pyramidale we represent $\cond$ into the coordinates
+defined by its eigenvectors (see fig. \ref{esquemas01}).
+ We shall call them $(t,a)$ coordinates
+and asume that the first is approximately tangent to the
+strata and the other to the apical direction. The $\cond$ tensor would 
+have the expression in such coordinates
+\begin{equation}
+\tilde{\cond}=
+\begin{pmatrix}
+\sigma_t & 0 \\
+0 & \sigma_a
+\end{pmatrix}
+\end{equation} 
+Then, the equation \ref{Imcart} becomes
+\begin{equation}\label{Imapic}
+\begin{split}
+-I_m= & (\partial_t \sigma_{t}) (\partial_t \phi) +
+(\partial_a \sigma_{a}) (\partial_a \phi)  \\
+& + \sigma_{a} \partial_a^2 \phi + \sigma_{t} \partial_t^2 \phi, 
+\end{split}
+\end{equation}
+as $(t,a)$ are also local ortogonal coordinates. 
+One may wonder why we are explicitly stating the non-diagonal 
+version of the equations. The data as it is delivered by
+the measuring apparatus is on a strictly cartessian grid, and
+we have to perform the numerical derivatives over this data, so
+we have to know how these assumptions appear in both sets
+of coordinates. Besides, the \emph{tangent-apical} coordinates
+are just a teoretical tool, a numerical implementation of such a coordinate
+set would be  complicated and prone to numerical errors. 
+
+
+If the medium where the ions diffuse is liquid, and the structures
+therein are randomly distributed, the assumption of isotropy may hold 
+on average in sufficiently big scales \cite{Bedard11}. 
+In order to not make the notation more cumbersome, let us aggree
+that we are dealing with averages over volumes of the aproximate size
+of the electrodes. Then, 
+$\sigma_t=\sigma_a=\sigma$. As we stated, there is no
+change along the strata, but there is change along the appical
+direction:
+\begin{align}
+\partial_t \sigma & =0 \\
+\partial_a \sigma & \neq 0. 
+\end{align}
+We are then left with
+\begin{equation}
+I_m=-\partial_t \sigma \partial_t \phi - \sigma \nabla^2 \phi.
+\end{equation}
+Here we must point out that the Laplacian is an invariant operator,
+so the last summand of the equation could be in principle be implemented
+in \emph{any} convenient set of coordinates, but in numerical aplications,
+the \emph{Discrete Laplacian Operator} is \emph{not} invariant (further
+discution in the following section). 
+The term $\partial_t \sigma \partial_t \phi$ is the hindrance to 
+ionic displacement due to dense layers of soma and dendrites near the
+CA structure. Most autors have neglected its efects, and in one
+dimensional analysis the structure of sources and sinks is not affected
+by this. Now, as the aquisition of data in two dimensions becomes
+finer, this term could lead to inexactitude in the location of the
+sinks and sources, depending on the magnitude of the
+derivative of the conductance. Locally both $(x,y)$ and
+$(t,a)$ are orthonormal systems, so we can change from one to another 
+with a rotation. If $theta$ is the angle between the $x$ vector
+and $t$, the partial derivatives follow the next set of relations:
+\begin{align}
+\partial_t \sigma &= \cos\theta \partial_x \sigma +\sin\theta \partial_y \sigma=0\\
+\partial_a \sigma &= -\sin\theta \partial_x \sigma +\cos\theta \partial_y \sigma
+\end{align}
+
+After a bit of algebraic juggling we end up with
+\begin{equation}
+-I_m=\sigma\nabla^2 \phi + 
+\partial_x\sigma (\partial_x \phi - \tan \theta \partial_y \phi)
+\end{equation} 
+
+
+In order to estimate the influence
+of this summand on the result, we shall make some toy models which
+represent the variation of $\sigma$ along the apical direction.
+
+
+
+
+
+
+For a carefull and complete derivation and discution of the CSD, 
+see \cite{Bedard11}. We start with the charge conservation equation,
+\begin{equation}
+\nabla \cdot \Jd + \frac{d \rho}{d t} =0.
+\end{equation}
+
+
+
+\bibliographystyle{plain}
+\bibliography{BiblioReportes01}
+
+
+
+\end{document}

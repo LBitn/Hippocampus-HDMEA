@@ -1,0 +1,2 @@
+# Usando el paquete ya listo de Julia, aprendamos a hacer FastICA primero
+using JLD, MultivarStats

@@ -1,0 +1,256 @@
+\documentclass{article}
+
+%usepackage[utf8]{inputenc}
+ \usepackage{fontspec}
+\usepackage{amsmath}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+
+
+\setmainfont[Ligatures=TeX]{Oldstyle HPLHS}
+
+\newcommand{\Jd}{\mathbf{J}}
+\newcommand{\EF}{\mathbf{E}}
+\newcommand{\cond}{\boldsymbol{\sigma}}
+\DeclareMathOperator{\diver}{div}
+\DeclareMathOperator{\grad}{grad}
+
+\title{Densidad de Fuentes de Corriente y Coordenadas generalizadas}
+\author{W. P. Karel Zapfe}
+
+\begin{document}
+
+\maketitle
+
+\section{Cálculo Diferencial y Electrodinámica sobre el Hipocampo}
+
+En principio, la densidad de fuentes de corriente se puede obtener
+de la densidad de corriente por continuidad:
+\begin{equation}
+\nabla \cdot \Jd +\frac{\partial \rho}{\partial t}=0.
+\end{equation}
+Es usual llamarle a $\partial \rho /\partial t =-I_m$, la densidad de 
+fuentes de corriente.
+Ahora es momento para recordar que la notación ``nabla'' resulta especialmente
+inconveniente para cambios de coordenadas, pues nos hace creer (y meter la pata)
+que sus componentes cambian siempre igual, y eso no es el caso. Por
+ello voy a reescribir de una forma más libre de coordenadas la ecuación de arriba:
+\begin{equation}
+\diver \Jd =I_m.
+\end{equation}
+Obsérvese que la cantidad $\Jd$ es una cantidad \emph{vectorial}, cuyos componentes
+cambian de acuerdo a las coordenadas usadas localmente, sin embargo $I_m$ es un
+escalar, es decir, es invariante frente a cambios de coordenadas. Por
+ende, la operación $\diver ()$ tiene que contrarrestar el cambio de coordenadas,
+es decir, es un operador \emph{contravariante}, a diferencia del operador
+gradiente, que denotamos como $\nabla$ sin el puntico de producto interno\ldots
+
+Si el material es ohmico y descente esperamos esta relación:
+\begin{equation}
+\Jd=\cond \EF,
+\end{equation}
+despreciando la contribución del campo de desplazamiento eléctrico (ver
+las eqs. 18 y 28 los argumentos entre ellas en \cite{Bedard11}).
+Por el momento supongamos que estamos en un régimen linear, donde
+$\cond$ no depende de $\EF$. Sin embargo no hay ninguna razón
+de entrada para asumir $\cond$ como isotrópico o homogéneo. Así que en
+general consideremos a $\cond$ como un tensor, cuyas componentes generales
+son:
+\begin{equation}
+\cond=\begin{pmatrix}
+\sigma_{xx} & \sigma_{xy} \\
+\sigma_{yx} & \sigma_{yy}
+\end{pmatrix}
+\end{equation}
+Nótese que ya estoy restringiendome a un universo bidimensional.
+Este tensor es real y simétrico, así que básicamente esto quiere decir
+que podemos encontrar un sistema de coordendadas \emph{ortonormales}
+donde el tensor sólo tenga componentes diagonales (el sistema estaría
+alineado con los ``componentes principales'', véase por ejemplo la
+ecuación 6 en Mitzdorf,
+\cite{Mitzdorf85}). El cambio de coordenadas del sistema $(x,y)$ al
+sistema de componentes principales, que denotaré por $(t',a')$ es localmente
+\emph{ortogonal}, pues preserva norma y producto interno de nuestra
+base cartesiana usual. Este cambio de coordenadas es local, ya que como
+no hemos supuesto que $\cond$ sea constante, los ejes principales
+pueden variar de punto a punto. Vamos a considerar que son 
+bastante suaves y que por lo tanto dicha transformación local es la
+diferencial de un cambio de cordenadas ortogonal adecuado.
+Dado que la conductividad, a pesar de estar representada por este
+objeto matemático abstracto (un tensor de rango dos), es algo muy concreto,
+la sabiduría convencional indica que los ejes principales en cada punto
+deben de estar alineados con las estructuras notorias de nuestro material.
+
+En nuestro caso particular, las estructuras de interés son los cuerpos laminados
+donde se encuentran los somas de las neuronas, el ``estrato piramidal'',
+y las capas dendríticas cerca de éste. Podríamos imaginar entonces
+que los ejes principales siguen, punto por punto, a lo largo del
+CA, un vector tangente al centro de este estrato piramidal y otro vector
+normal a éste, que llamare ``apical'' por analogía, véase la fig. 
+\ref{esquemas01}.
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}[b]{0.45\textwidth}
+\includegraphics[width=\textwidth]{DiagramaCAetDG02.pdf}
+\caption{Esquema}
+\label{diagCA}
+\end{subfigure}
+\quad
+\begin{subfigure}[b]{0.45\textwidth}
+\includegraphics[width=\textwidth]{PseudoCoordinates01.pdf}
+\caption{Coordenadas}
+\label{pseudocor}
+\end{subfigure}
+\caption{ (\ref{diagCA}) Esquema del hipocámpo en nuestras rebanadas y su
+colocación aproximada en el BioCAM. Se muestran los estratos somáticos.
+(\ref{pseudocor}) Coordenadas ortogonales putativas, a lo largo del eje
+``tangente al estrato piramidal'', $t$ y ``apical'', $a$. } 
+\label{esquemas01}
+\end{figure}
+
+Obsérvese que para el argumento no es central el hecho de que estas coordenadas
+estén realmente alineadas con la dirección apical y el estrato piramidal, 
+lo único importante es que existen ejes
+principales para la conductividad en cada punto, y que la transformación
+localmente puede ser vista como una rotación (ya que los eigenvectores pueden
+escogerse normales). Voy  a denotar por un tilde a los objetos representados
+en las coordenadas de los ejes principales, y por $T$ 
+a la transformación diferencial que pasa de coordenadas $(x, y)$ a las $(t,a)$:
+\begin{equation}
+\tilde{\cond}=
+\begin{pmatrix}
+\sigma_{t} & 0 \\
+0 & \sigma_{a}
+\end{pmatrix} = T \cond T^{-1}
+\end{equation}
+Como podemos escoger los eigenvectores de $\cond$ normalizados, $T$ es 
+una localmente una rotación, digamos que por el ángulo $\theta$:
+\begin{equation}
+T=
+\begin{pmatrix}
+\cos \theta  & \sen\theta \\
+-\sen\theta  &\cos \theta 
+\end{pmatrix}  
+\end{equation}(ver diagrama en la figura \ref{diagdif})
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.67\textwidth]{DiferentialCoordinates01.pdf}
+\caption{La base del espacio tangente.}\label{diagdif}
+\end{figure}
+
+
+Con esta convención, los ejes principales definen una base tangente local que
+es ortonormal, entonces:
+\begin{equation}\label{imcambio}
+\tilde{I_m} = \widetilde{\diver} \tilde{\Jd}=\partial_t J_t+\partial_a J_a.
+\end{equation}
+Y la densidad de corriente a su vez esta dada por,
+\begin{equation}
+  \tilde{\Jd} = \tilde{\cond} \tilde{\EF}=\begin{pmatrix}
+-\sigma_t \partial_j \phi \\
+-\sigma_a \partial_a \phi 
+\end{pmatrix}
+\end{equation}
+
+Por otro lado, $I_m$ está dada por:
+\begin{equation}
+\begin{split}
+I_m& =\diver \sigma \EF = \diver \sigma (-\grad \phi)\\
+& = \diver T^{-1}\tilde{\sigma} T 
+\begin{pmatrix}
+- \partial_x \phi \\
+- \partial_y \phi 
+\end{pmatrix}
+\end{split}
+\end{equation}
+Tenemos que también los operadores parciales rotan así:
+\begin{align}
+\partial_x & =\cos\theta\partial _t - \sen\theta\partial_a \\
+\partial_y & =\sin\theta\partial _t +\cos\theta\partial_a
+\end{align}
+Es decir,
+\begin{equation}
+\begin{split}
+I_m& =\diver \sigma \EF = \diver \sigma (-\grad \phi)\\
+& = \diver T^{-1}\tilde{\sigma} T T^{-1} \begin{pmatrix}
+-\partial _t \phi\\
+-\partial_a \phi
+\end{pmatrix}\\
+&  = \diver T^{-1}\tilde{\sigma} \begin{pmatrix}
+-\partial _t \phi\\
+-\partial_a \phi
+\end{pmatrix}\\
+&  = \diver T^{-1} \begin{pmatrix}
+J_t\\
+J_a
+\end{pmatrix},
+\end{split}
+\end{equation}
+lo cual queda en el sistema cartesiano como:
+\begin{equation}
+\begin{split}
+I_m & =\partial_x (\cos\theta J_t - \sen \theta J_a) + \partial_y (\sen\theta J_t + \cos\theta J_a) \\
+&= (\cos\theta \partial_x -\sen\theta \partial_a)(\cos\theta J_t - \sen \theta J_a) \\
+ &\quad +
+(\sen\theta \partial_t + \cos \theta \partial_a)
+(\sen\theta J_t + \cos\theta J_a) \\
+&= \cos^2 \theta \partial_t J_t + \sen^2\theta \partial_a J_a 
+- \cos\theta\sin\theta(\partial_t J_a +\partial_a J_t )\\
+&\quad + 
+ \sin^2 \theta \partial_t J_t + \cos^2\theta \partial_a J_a 
++ \cos\theta\sin\theta(\partial_t J_a +\partial_a J_t )\\
+&= \partial_t J_t + \partial_a J_a \\
+&=\tilde{I}_m
+\end{split}
+\end{equation}
+Lo cual es lo que tenía que salir, si todo es correcto.
+Ahora que estamos seguros que la densidad de fuentes de corrientes
+es invariante frente a estos cambios locales de coordendadas, 
+todavía tenemos un problema: la conductividad puede no ser homogenea
+ni isotrópica. Por ello he trabajado sobre la divergencia
+de la densidad de corriente y no sobre el Laplaciano del potencial
+de campo eléctrico $\phi$. Continuemos la discución ahora sobre ello
+a partir de que podemos trabajar el álgebra en un sistema de coordenadas
+y la implementación numérica en otro y obtener el mismo resultado. 
+
+\section{La conductividad}
+
+A partir de éste momento, estamos localmente en el sistema 
+de ejes principales. expandiendo la expresión para $I_m$ tenemos que:
+\begin{equation} \label{CSDExplicita}
+\begin{split}
+I_m & =\partial_t J_t+ \partial_a J_a \\
+& \quad = -\partial_t (\sigma_t \partial_t \phi)  + 
+\partial_a (\sigma_a \partial_a \phi)  \\
+& \quad = - (\partial \sigma_t) \cdot ( \partial_t \phi) - \sigma_t \partial_t^2 \phi 
+- (\partial_a \sigma_a) \cdot ( \partial_a \phi) - \sigma_a \partial_a^2 \phi 
+\end{split}
+\end{equation} 
+En varios trabajos clásicos se  asume que $\partial_k \sigma=0$ (homogeneidad), y que 
+$\sigma_t=\sigma_a$ (isotropía), o trabajan en una sola dirección
+espacial y asumen que es uno de los ejes principales del tensor de conductividad,
+y que su derivada es despreciable en una vecindad)
+(\cite{Holsheimer87, Leski11, Mitzdorf85, Pettersen2006, Vaknin88}.  
+En el primer caso, la ecuación \ref{CSDExplicita} se reduce a 
+a aplicarle el Laplaciano al potencial de campo:
+\begin{equation}
+I_m=-\sigma(\partial_t^2 + \partial_a^2) \phi.
+\end{equation}
+La implementación numérica de esto puede tener sutilezas, que trataré en la 
+próxima sección. 
+
+
+
+ 
+
+\bibliographystyle{plain}
+\bibliography{BiblioReportes01}
+
+
+
+\end{document}

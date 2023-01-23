@@ -1,0 +1,55 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+
+
+\begin{document}
+
+\section{High density LFP in Hippocampus slices}
+
+
+Microelectrode Array (MEA) technology has been steadily and almost exponentially increasing in the last three decades. At this very moment, state-of-the-art MEAs have separations between recording electrodes at sizes comparable to the soma of a typical pyramidal or granular cell. Also temporal sampling is increasing, allowing the experimenter to take measurements at least t 7KHz, making the details of rising and falling of an extracellular electrophysiological recording apparent. In very dense neural tissue, this can lead to complications, as the electric potential is a long-range decaing signal, which can obfuscate the details of the origin of activity, in one side, and noissy signaling, on the other.
+
+
+\section{CSDA}
+
+
+It is aknowledged that a signal with a stepper spatial decay can be used as an alternative to LFP recordings. The Current Source Density (CSD) fills the requisites and can be, at least theoretically, be obtained rapidly from LFP. In practice, we have to take into account the finite precision of the measurements, the spatial scales of the producing phenomena, and the numerical implementation of the opperators involved in the derivation. 
+As we approach the typical sizes of the neurons involved in the generation of currents and electric fields, the theoritacal and numerical derivations has to be done with possible inhomogenities in mind. 
+
+CSD is defined as the divergence of Current Density, $J$, which, due to charge conservation, must be equal to the rate of change of charge density in a given point in space:
+
+\begin{equation}
+  \nabla \cdot J + \partial_t \rho=0
+\end{equation}
+
+If the extracellular medium is liquid, the isotropic, homogeneus assumption is valid
+\emph{provided we take a mean field approach at scales larger than neuronal components}. With the 3Brain 4096 MEA, this is allmost a limiting case: the sepparation between electrode centers is 42 $\mu m$, while the sepparation between their borders is $21 \mu m$.
+Typical pyramidal cells have a soma of $\approx 40 \mu m$ acroos, while granular cells have a soma of around $60 \mu m$. If we take that each electrode does not measure at an exact geometrical point but rather averages over the electrode surface, then the macroscopic mean field equations are valid \cite{Bedard11}, but the scale is fine enough to take the monopolar sources as the main contribuitors. Then the simpler, quasistatic expression is valid. We take the usual definition and denote the CSD by $I_m$:
+\begin{equation}\label{defCSD}
+  I_m := -\partial_t \rho \propto -\nabla^2 \Phi 
+\end{equation}
+
+The validity of such assumptions and a deeper analysis shall be presented elsewhere. 
+
+For MEAs that have a wider spacing between electrodes, a very sophisticated \emph{inverse approach} has been developed by Leski et al \cite{Leski2011} and generalized to non-grid arrays of electrodes by Potworowsky et al. \cite{Potworowsky2011}. In our case the sophistications get lost due to the finesse of the recording grid (observe the visual comparition in \cite{Potworowsky}, Figure 1). Moreover, the complexity of the iCDSA grows very rapidly as the number of recording cites increases, making it unnusuable for large data sets. For this reason we argue that at such densities a numerical Laplacian is a better alternative for approximating the expression in eq. \ref{defCSD}. Border effects are negligible for a 64 by 64 electrode array. The best suited numerical Laplacian operator is a convolution of the data  with the following matrix:
+\begin{equation}
+\nabla^2_{1/3}=(2/3)
+\begin{pmatrix}
+  0 & 1 & 0 \\
+  1 & -4 & 1 \\
+  0 & 1 & 0
+\end{pmatrix}
++1/3
+\begin{pmatrix}
+  0.5 & 0 & 0.5 \\
+  0 & -2 & 0 \\
+  0.5 & 0 & 0.5
+\end{pmatrix}  
+\end{equation}
+This particular operator minimizes the effect of the orientation of the electrode grid 
+\cite{Lindberg90}.
+
+
+\end{document}

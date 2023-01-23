@@ -1,0 +1,231 @@
+\documentclass[10pt]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage{mhchem} % para formulas quimicas
+
+%\AtBeginSection[]{
+%\begin{frame}
+%\frametitle{Table of Contents}
+%\tableofcontents[currentsection]
+%\end{frame}}
+
+\usetheme{Berlin}
+\usecolortheme{beaver}
+\usefonttheme{serif}
+
+\begin{document}
+
+\section{LFP and Multi-unitary Activity}
+
+\begin{frame}
+  \frametitle{LFP Measurements}
+  {\small The LFP is the Electric Potential in
+  the extracellular medium around neurons. It is generated
+  by the transient ionic imbalances that are consequence
+  of neuronal activity. LFP is regarded as the consequence
+  of multi-unitary activity, and as such filtering
+  is done to prevent single spikes from dominating the signal.
+  We inquiry ourselves if from the LFP measurement we can
+  track some form of functional connectivity between
+  nearby multi-unitary circuits.}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{LFP moves as a wave during epileptic attacks}
+  Inspiration for this method was found in Epileptic Activity
+  in the Hippocampus. In such cases, activity moves in continuous waves across
+  the tissue, as opposed to jumping between sites. This suggest
+  that there is effective coupling between nearby groups of
+  neurons. The channels  can be  ephaptic coupling, integrated
+  sub-threshold activity, or other media that help
+  to generate synchronicity and direct communication between close
+  circuits.
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{LFP Inconveniences}
+  Unfiltered measurements of the extracellular potential
+  have some drawbacks:
+  \begin{itemize}
+  \item It spreads as $1/d$, but not in an homogeneous fashion.
+  \item It has considerable noise.
+  \end{itemize}
+    \begin{center}
+  \includegraphics[width=0.9\textwidth]{LFPVariosTrazosDeEjemplo01.png}  
+  \end{center}
+
+\end{frame}
+
+
+\section{CSD}
+
+\begin{frame}
+  \frametitle{The CSD representation}
+  A formally equivalent representation of the Electrical Activity
+  as seen from the extracellular space is the CSD.
+  Ideally, it is the negative Laplacian of the LFP.
+  In practice it implies some filtering, as differential operators
+  are highly sensible to noise. Before we apply some numerical
+  difference operators, we smooth the data with the following procedures:
+  \begin{itemize}
+  \item A Gaussian Blur: spatial noise filtering.
+  \item A Gaussian Convolution: temporal smooth low pass filter. 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{The CSD itself}
+  Then a finite difference operator can be applied.
+  For data in a rectangular lattice, the closest one
+  to rotational invariance is the Lindberg operator:
+  \begin{equation}
+    \nabla^2_{1/3}=2/3
+    \begin{pmatrix}
+      0 & 1 & 0 \\
+      1 & -4 & 1 \\
+      0 & 1 & 0
+    \end{pmatrix}
+    +1/3
+    \begin{pmatrix}
+      0.5 & 0 & 0.5 \\
+      0 & -2 & 0 \\
+      0.5 & 0 & 0.5
+    \end{pmatrix}  
+\end{equation}
+ This operator is convoluted with the data frame by frame. 
+\end{frame}
+
+\begin{frame}
+  \frametitle{Comparision between CSD and LFP}
+  \begin{center}
+  \includegraphics[width=0.75\textwidth]{PrimerCuadro-01.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Advantages of CSD representation}
+  \begin{itemize}
+  \item It reduces spread.
+  \item It separates the signal into two
+    \emph{physiologically interpretable} sets of actions.
+  \end{itemize}
+  The second point is the one that we shall exploit. 
+\begin{center}
+  \includegraphics[width=0.85\textwidth]{MapaLFPObienetall.png}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Sinks and Sources}
+  As a neuron prepares itself for activity, it begins
+  to absorb \ce{Na+} ions of the outside medium. This creates a
+  \emph{``Sink''} in the volume surrounding the base of the axon.
+  Almost immediately, the neurons spit out \ce{Ka+} ions, producing a
+  \emph{``Source''} of current outside the cell. The different localisation
+  of these paired actions create a dipole pattern in the CSD representation.
+  The CSD representation gives us a meaningful distinction
+  between phases of the action.
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Sinks and Sources Separate The Activity}
+  A Source is a Source above certain threshold and a
+  Sink is a Sink below certain threshold. Everything
+  in between is regarded as noise.
+
+  We determine this threshold by an heuristic criterion.
+  In this example we show the borders done with $2\sigma$
+  of the noise signal.
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{EjemploFronteraComponentesDisjuntos01.png}
+  \end{center}
+  
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Separated activity results in Disconnected Sites.}
+  By vector averaging we can find the Center of each one of
+  these sites.\\
+  Our knowledge about the CSD representation guaranties us that
+  the patches are going to be well localizated over the active sites.
+  Also, by choosing a high enough treshold value, we guarantee that
+  the patches are going to be over different active multi unitary groups.
+  \begin{center}
+    \includegraphics[width=0.4\textwidth]{CSDCM-550.png}
+  \end{center}
+  
+\end{frame}
+
+\section{Trajectories}
+
+\begin{frame}
+  \frametitle{Concatenate the Centers}
+  Also, by continuity, we shall expect that the obtained CM move
+  to nearby sites as time pases, their displacement revealing the
+  slight asyncronicity between units of an integrated circuit.
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{TresCuadrosConTrayectoria01.png}
+  \end{center}
+  
+\end{frame}
+
+\begin{frame}
+  \frametitle{Trajectories}
+  Once the trayectories are obtained, a series of graphical and
+  numerical analysis are possible. 
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{PathsComparaTraub.png}
+  \end{center}
+  
+\end{frame}
+
+\begin{frame}
+  \frametitle{Velocities of the CMs}
+  We have obtained the velocities of these centers.
+  These are well within what is expected from axonal transmission
+  of potentials of action.
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{velocitiesSinksandSources.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Other interesting relations}
+  A curious representation of an Epilleptic Wave.
+  \begin{center}
+    \includegraphics[width=0.4\textwidth]{IntensityAgainstMoment.png}
+  \end{center}
+  Every trace in the above plot is  CSD. The circular dot is its Average
+  Intensity at half of its duration. The $x$ axis is in seconds, and
+  the $y$ axis is charge per area in arbitrary units. 
+\end{frame}
+
+\section{What else?}
+
+\begin{frame}
+  \frametitle{An observation}
+  Trajectories are never \emph{too long}. Gaps are present
+  in what appears to be a systemic disposition.
+  \begin{center}
+    \begin{tabular}{cc}
+      \includegraphics[width=0.4\textwidth]{dbscanposejem01.png}
+      &
+      \includegraphics[width=0.3\textwidth]{zipfexample.png}
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+
+
+\begin{frame}
+  
+\end{frame}
+
+
+\end{document}

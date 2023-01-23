@@ -1,0 +1,196 @@
+\documentclass[10pt, serif]{beamer}
+
+%\usepackage[numberedbib]{apacite}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{natbib}
+\usepackage{bibentry}
+\usepackage{color}
+\usepackage{beamerthemeshadow}
+
+\usetheme{Berlin}
+\usecolortheme{spruce}
+
+
+%bibliographystyle{apalike}
+
+
+\begin{document}
+
+\begin{frame}
+    \frametitle{The track of activity and MEAs}
+    Given a record of LFP is it possible to discover
+    some track that the neural activity traces in a meaningful
+    way?
+    \begin{center}   
+    \includegraphics[width=0.55\textwidth]{ImagenManjarrez01.jpg}
+    \end{center}
+    
+    ZC Chao et all, \emph{Effects of Random External Background Stimulation
+      on Network Synaptic Stability After Tetanization}, Neuroinformatics, 3, 2007.\\
+
+    Manjarrez et all, \emph{Computing the Center of mass for traveling alpha waves in
+  the human brain}, Brain Research 1145, 2007.   
+  \end{frame}
+
+
+   \begin{frame}
+     \frametitle{CMA may work, but an adequate measure density is needed.}
+     For a series of sets, indexed by $k$, we want to find their ``center of
+     mass'', that is, their vector average, at the moment $t$. let $j$ run over
+     the elements of the set, and $x$ be their coordinates, then the $k$-th
+     center of mass at time $t$ is given by:
+     
+     \begin{equation}
+       \langle x_k(t) \rangle =\frac{\sum_j x_{j,k} (t) m_{j,k} (t)} {\sum_j m_{j,k}(t)}
+     \end{equation}
+
+     Then, $m_{j,k}$ has to be a measure density function, in more or less the usual
+     definition (positive and with finite integral over the sets).
+   \end{frame}
+
+   \begin{frame}
+     \frametitle{Manjarrez choice}
+
+     Manjarrez et all. use the positive part of the signal, with respect to
+     the measurements device zero. As the signal is a potential, this
+     is very loosely defined. Even more, it disregards polarization events.
+     At a very rough scale may give adequate results.
+          
+     \begin{itemize}
+       \item LFP (as most Potential measures) has no defined zero.
+       \item Disregards half of the activity that appears in the recording as
+         ``negative'' potentials.
+       \item Large scale use.
+     \end{itemize}
+
+     \begin{tabular}{ c c }
+      \includegraphics[width=0.36\textwidth]{ComoManjarrezHaceCM01.png} &
+       \includegraphics[width=0.6\textwidth]{ImagenManjarrez01.jpg}
+     \end{tabular}
+
+    \end{frame}
+
+
+   \begin{frame}
+     \frametitle{Chao's choice}
+
+     Chao et all. use the firing rate density as density measure. 
+     This is a more rigorous choice, and more adequate to
+     work with microelectrode arrays, closer to the cellar scale.
+          
+     \begin{itemize}
+       \item Positive function.
+       \item Requires external parameter (bin size), can be adjusted on
+         heuristics. 
+       \item It specializes on one type of action, namely, spikes. 
+     \end{itemize}
+
+     \begin{tabular}{ c c }
+      \includegraphics[width=0.3\textwidth]{ComoChaoHaceCM01.png} &
+       \includegraphics[width=0.5\textwidth]{ChaoFRCAT.png} 
+     \end{tabular}
+
+    \end{frame}
+
+   
+
+  \begin{frame}
+    \frametitle{A Natural density is at hand}
+    Assuming constant, isotropic properties of the extracellular medium:
+      \begin{equation}
+       I_m/\sigma=-\nabla^2 V
+      \end{equation}
+      \begin{equation}
+       \frac{\partial \rho}{\partial t} + \nabla \cdot \mathbf{J}=0 
+      \end{equation}
+      What about the sign?
+      The sign help us to recognize two disjoint sets of activity:
+      the Sources, and the Sinks.
+      We have two different non overlapping measures: the
+      Sink Density and the Source Density.\\
+
+      \begin{tabular}{ c c }
+        \includegraphics[width=0.49\textwidth]{VectorFields.png} &
+        \includegraphics[width=0.49\textwidth]{CSDSeminarioTraub.png} 
+      \end{tabular}
+          
+  \end{frame}
+     
+     
+
+  \begin{frame}
+     \frametitle{Implementation: naïve search}
+     A direct approach proves useless, as the activity occurs at separated
+     sites along CA1 and CA3. The concave geometry of our slice
+     produces a center of mass outside the CA, and without physiological
+     interpretation.
+
+       \begin{tabular}{ c c }
+      \includegraphics[width=0.5\textwidth]{CSD_SemTraub02.png} &
+       \includegraphics[width=0.35\textwidth]{DiagCSDTraub.pdf} 
+     \end{tabular}
+     
+  \end{frame}
+
+    
+  
+  \begin{frame}
+     \frametitle{A Natural Decomposition}
+     Both Sink and Sources Set form patches over the interest region.
+     There is a noise level that forms a ``thick'' zero. This allows us
+     to sepparate each set into Disconnected components.
+     \begin{tabular}{ l r }
+      \includegraphics[width=0.35\textwidth]{DisjuntosUmbral.png} &
+       \includegraphics[width=0.5\textwidth]{CSDCMSemTraub.png} 
+     \end{tabular}
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{CM dynamics: putative trajectories for activity}
+    Joining CM to CM at each time frame with a proximity threshold gives us
+    putative trajectories for the activity, already separated by type
+    and location.
+    \begin{center}
+      \includegraphics[width=0.55\textwidth]{TrayectoriasLimpiasNumeros01.png} 
+    \end{center}
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{Classification of Trajectories}
+       \begin{center}
+      \includegraphics[width=0.55\textwidth]{PathsComparaTraub.png} 
+    \end{center}
+ 
+    
+  \end{frame}
+  
+  
+  
+  \begin{frame}
+    There is still work to do here, and the Devil hides in the details.
+    \begin{center}
+      \includegraphics[width=0.55\textwidth]{TrayLimpSemTraub.pdf}
+      \end{center}
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{And now for something completely different \ldots}
+    There is other density available directly from the data:
+    Power density.\\
+    It also admits a decomposition into different interpretable sets:
+    a decomposition by frequency bands.
+    \begin{center}
+      \includegraphics[width=0.55\textwidth]{DisconnectedByBands01.png}
+      \end{center}
+  \end{frame}
+  
+
+ 
+%  \begin{frame}{Bibliography}
+   % \bibliographystyle{apacite}
+  %  \bibliography{BiblioReportes01}
+ % \end{frame}
+\end{document}
+

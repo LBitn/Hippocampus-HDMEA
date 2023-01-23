@@ -1,0 +1,342 @@
+\documentclass{article}
+
+%\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{amsmath, amssymb}
+
+\usepackage{graphicx}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+
+
+\setmainfont[Ligatures=TeX]{Oldstyle HPLHS}
+
+\newcommand{\Jd}{\mathbf{J}}
+\newcommand{\EF}{\mathbf{E}}
+\newcommand{\cond}{\boldsymbol{\sigma}}
+\DeclareMathOperator{\diver}{div}
+\DeclareMathOperator{\grad}{grad}
+
+\title{Two Dimensional CSDA at the scale of neuronal tissue.}
+\author{W. P. K. Zapfe, Whoever Helps}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+As high density electrode arrays become more common 
+electrophysiological measurements of activity in neural tissue approach
+the scale of individual neurons. The electrodes measure
+directly the Local Field Potential, but it is aknowledged that the
+Current Source Density has more resolving power and distinguishes
+clearly between the loci of outgoing and ingoing currents.
+ The role of the conductivity tensor is rarely taken into account
+in the derivation of the CSD, and this could potentialy lead to
+spurious distributions of the sources and sinks. 
+In dense neural tissue, such as the
+stratum piramidale layer of the hippocampus, clear
+deviations from average conductivity have been measured. 
+Here we show a possible qualitative treatment of the conductivity
+across the layers of the hippocampus based on experimental evidence
+and general smoothness arguments.
+\end{abstract}
+
+
+\section{Introduction}
+
+As Bédard and Destexhe pointed out in \cite{Bedard11}, the CSDA, as it
+is performed usually, rests on
+assumptions which could leave important features out. One of these 
+is that the extracellular medium has very homogeneous 
+electrical propierties. This may depend on the scale in which measurements
+take place and the size of the neuronal structures involved. We shall
+focus our atention on the hippocampus of the rat and mouse
+ and its typical sizes in what follows. 
+
+The CSDA is the application of charge conservation theorem
+for ionic dilutions in the extracelular medium for neuronal
+tissue. CSD are obtained either directly through application
+of a numeric Laplacian operator directly to LFP data \cite{Nicholson75}, 
+or through  more refinated
+techniques, called inverse CSDA \cite{Pettersen2006, Leski2011} or kernel CSDA 
+\cite{Potworowsky2011}. There the conductivity $\cond$ is taken as 
+ a numerical constant, that is:
+\begin{equation}\label{CSDasLaplacian}
+-\nabla^2 \Phi = \frac{I_m}{\cond}. 
+\end{equation}
+Here $\Phi$ is the LFP and $I_m$ the current source density. 
+This is indeed a reasonable treatment at scales larger than $100\mu m$,
+where each electrode measures averaged contributions from many different
+densities of activity and structures. Even more, data are 
+generaly smoothed out for presentation, and this contributes to the
+averaging process.
+
+On the other hand, it has been shown that at 
+dense neuronal layers such as the piramidal
+strata in the hippocampus the conductivity (or equivalently,
+the resistivity) varies greatly around its mean value along
+an axis which transverses said structure
+\cite{Holsheimer87, Lopez01, TrevinoPersonal}. 
+The evidence points out that resistivity grows 
+considerably around the thick somatic layers. These layers 
+have thickness between $40\mu m$ to $100 \mu m$, which is
+near or above the interelectrode spacing of stat-of-the-art MEAS, so
+differences in conductivity shall be noticiable at this
+level of resolution. In the following we shall analytical address this
+issue, then, we will implement a model ``conductivity variation'' 
+and use it on real LFP data, compare
+the results with those done without this factor and then conclude.
+
+
+\section{Analytical  derivation of the CSD}
+
+The following linear relationship is a good aproximation for
+most media at convencional regimes: 
+\begin{equation}
+\Jd=\cond \EF,
+\end{equation}
+that is, the current density $\Jd$ is the result of the
+local electric field $\EF$ and the local conductivity, $\cond$.
+We usually take this quantity as constant, 
+at least over macroscopic scales.
+The conductivity in inhomogeneous media can be rarely
+simplified this much, as it can depend both from the direction
+of the fields and currents, and vary from point to point. 
+Then the above expression is just shorthand notation for the
+explicit  \emph{tensorial} relationship:
+\begin{equation}
+  \begin{pmatrix}
+    J_x \\
+    J_y \\
+    J_z
+  \end{pmatrix}
+  =
+   \begin{pmatrix}
+     \sigma_{xx}E_x+ \sigma_{xy}E_y+\sigma_{xz}E_z \\
+     \sigma_{xy}E_x+ \sigma_{yy}E_y+\sigma_{yz}E_z \\
+     \sigma_{xz}E_x+ \sigma_{yz}E_y+\sigma_{zz}E_z \\
+  \end{pmatrix},
+\end{equation}
+where we allready used the fact that $\cond$ is simmetric when
+expressed on Cartessian coordinates. All quantities are functions of
+both position and time.
+The electric field is in the quasi-static approximation the
+gradient of the LFP, $\Phi$:
+\begin{equation}
+  -\nabla \Phi=\EF
+\end{equation}
+To obtain the sources and sink densities, we use charge conservation in
+its differential form:
+\begin{equation}
+\nabla \cdot \Jd +\frac{\partial \rho}{\partial t}=0
+\end{equation}
+The usual definition of $-\partial_t \rho =I_m$ will be used here. 
+We perform the divergence operation on the current density, \emph{not}
+on the electric field. When the medium is isotropic and homogeneous
+this derivation coincides within a positive factor with the one
+on eq. \ref{CSDasLaplacian}.
+This makes sense when we are dealing with macroscopic quantities,
+that is, that they are at last one order of magnitude larger
+than the underlying physical structures which could cause 
+inhomogenities, but as measurements devices get finner,
+this treatment begins to be faulty. 
+Our primary concern are the roles of the thick somatic layers of
+the hippocampus of laboratory rodents and the implications for
+CSDA at scales of $20 \thicksim 50 \mu m$. 
+
+
+In experiments of this sort performed on hippocampus slices, the
+MEAs permit us to measure a sample of LFP over discrete points on a
+two dimensional lattice, so we do not have possibility of
+calculating currents or electric fields on the third dimension of space.
+The slices of the hippocampus are very thin, and we do not consider
+the posibility of current going outside the liquid media in which
+the sample lies (in one
+direction there is air and on the other the MEA), so we
+can reduce our formalism to two dimensional space. We then take
+$J_z=0$ and use $(x,y)$ as a cartesian coordinate system aligned
+with the MEA. Then the \emph{flat} current density  is:
+\begin{equation}
+  \begin{pmatrix}
+    J_x\\
+    J_y
+  \end{pmatrix}  =
+  \begin{pmatrix}
+    \sigma_{xx}E_x+\sigma_{xy}E_y \\
+    \sigma_{xy}E_x+\sigma_{yy}E_y 
+  \end{pmatrix}=
+  \begin{pmatrix}
+    -\sigma_{xx}\partial_x \phi -\sigma_{xy}\partial_y \phi \\
+    -\sigma_{xy}\partial_x \phi -\sigma_{yy}\partial_y \phi 
+  \end{pmatrix}.
+\end{equation}
+The divergence, in cartesian coordinates, yields:
+\begin{equation}\label{Imcart}
+  \begin{split}
+  -I_m= & (\partial_x \sigma_{xx}) (\partial_x \phi) +
+  (\partial_y \sigma_{yy}) (\partial_y \phi)\\
+& +(\partial_x \sigma_{xy}) (\partial_y \phi) +(\partial_y \sigma_{xy}) (\partial_x \phi)\\
+& + 2\sigma_{xy} \partial_x\partial_y \phi \\
+& + \sigma_{xx} \partial_x^2 \phi + \sigma_{yy} \partial_y^2 \phi.
+\end{split}
+ \end{equation}
+The \emph{tacit} assumption that can be noted in most of the CSDA previously
+done is that the derivatives of $\cond$ are negligible and only
+the terms on the last line are  taken into account. 
+It can be argued that for scales that
+encompas many neurons and interneuronal space, the averaged conductivity is
+constant and has then its derivatives vanish. For MEAS that take measuraments
+more than $100 \mu m$ appart, this may be a reasonable assumption (see
+for example, eq. 12 in \cite{Bedard11} and the arguments leading to it).
+Examples of such derivations are those obtained by the MED64 probe in the
+work of Wang et all \cite{Wang10}, etc etc. Also sofisticated
+numerical methods, such as iCSD \cite{Pettersen2006, Leski11}
+and kCSD \cite{Potworowsky2011} use this approximation, albeit
+explicitly. 
+
+If the interelectrode spacing
+is less than $100 \mu m$ then the neuronal tissue would begin
+to play a role in the inhomogenities of $\cond$, although the isotropic
+assumption may still be valid at scales larger than $20 \mu m$. At such 
+scales the laminar structure of the Cornu Amonis or the Gyrus Dentate is
+the main feature, and we should expect variations on the electrical 
+propierties of the media along the apical direction. Measurements made
+by Holsheimer showed that measurements in the CA1 region of a mouse
+hipocampus show variations of  $40\% $ in the resistivity around the mean
+value at distances of about $60 \mu m$.
+\cite{Holsheimer87}. This measurements have been confirmed
+recently by a collaborator \cite{TrevinoPersonal}. On the other hand
+we expect very little variation of the conductivity tensor along
+each structural layer. The symmetry of the conductivity tensor represents
+the structural underlying propierties of the media: as it can be 
+represented on a diagonal form on a suitable set of \emph{orthogonal}
+coordinates, then such coordinates must be associated with the 
+structures that give $\cond$ its values. Then the representation
+of $\cond$ in diagonal form should represent the conductivity
+along the axonal-apical direction, with high variation, and another
+axis transverse to it, in which $\cond$ showing very little variation.
+We can imagine that we can set a locally orthonormal set of coordinates
+alignate with such structures (see fig. \ref{esquemas01}).
+ Then the expression in eq. \ref{Imcart}
+can be reduced substantialy.  The $\cond$ tensor would appear as
+\begin{equation}
+\tilde{\cond}=
+\begin{pmatrix}
+\sigma_t & 0 \\
+0 & \sigma_a
+\end{pmatrix}
+\end{equation} 
+where $(t,a)$ are the transveral and axonal-apical local coordinates.
+The CSD would be obtained as
+\begin{equation}\label{Imapic}
+\begin{split}
+-I_m= & (\partial_t \sigma_{t}) (\partial_t \phi) +
+(\partial_a \sigma_{a}) (\partial_a \phi)  \\
+& + \sigma_{a} \partial_a^2 \phi + \sigma_{t} \partial_t^2 \phi. 
+\end{split}
+\end{equation}
+
+   
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}[t]{0.20\textwidth}
+\includegraphics[width=\textwidth]{DiagramaCAetDG02.pdf}
+\caption{}
+\label{diagCA}
+\end{subfigure}
+\quad
+\begin{subfigure}[t]{0.33\textwidth}
+\includegraphics[width=0.67\textwidth]{DiferentialCoordinates01.pdf}
+\caption{}
+\label{loceig}
+\end{subfigure}
+\begin{subfigure}[t]{0.20\textwidth}
+\includegraphics[width=\textwidth]{PseudoCoordinates01.pdf}
+\caption{}
+\label{pseudocor}
+\end{subfigure}
+\caption{\ref{diagCA}) A diagram showing the position of
+the hippocampus slice over the MEA. \ref{loceig}) 
+A tangent space basis along the
+eigenvectors of $\cond$. The red vectors indicate the
+Cartesian Coordinates aligned with the MEA latice. 
+\ref{pseudocor}) A putative local coordinate system spawned by the 
+eigenvectors $(t,a)$ at every point of intereset. 
+ }\label{diagdif}
+\label{esquemas01}
+\end{figure}
+
+
+
+If the medium where the ions diffuse is liquid, and the structures
+therein are randomly distributed, the assumption of isotropy may hold 
+on average in sufficiently big scales \cite{Bedard11}. 
+In order to not make the notation more cumbersome, let us aggree
+that we are dealing with averages over volumes of the aproximate size
+of the electrodes. Then, 
+$\sigma_t=\sigma_a=\sigma$. As we stated, there is no
+change along the strata, but there is change along the appical
+direction:
+\begin{align}
+\partial_t \sigma & =0 \\
+\partial_a \sigma & \neq 0. 
+\end{align}
+We are then left with
+\begin{equation}
+I_m=-\partial_t \sigma \partial_t \phi - \sigma \nabla^2 \phi.
+\end{equation}
+Here we must point out that the Laplacian is an invariant operator,
+so the last summand of the equation could be in principle be implemented
+in \emph{any} convenient set of coordinates, but in numerical aplications,
+the \emph{Discrete Laplacian Operator} is \emph{not} invariant (further
+discution in the following section). 
+The term $\partial_t \sigma \partial_t \phi$ is the hindrance to 
+ionic displacement due to dense layers of soma and dendrites near the
+CA structure. Most autors have neglected its efects, and in one
+dimensional analysis the structure of sources and sinks is not affected
+by this. Now, as the aquisition of data in two dimensions becomes
+finer, this term could lead to inexactitude in the location of the
+sinks and sources, depending on the magnitude of the
+derivative of the conductance. Locally both $(x,y)$ and
+$(t,a)$ are orthonormal systems, so we can change from one to another 
+with a rotation. If $theta$ is the angle between the $x$ vector
+and $t$, the partial derivatives follow the next set of relations:
+\begin{align}
+\partial_t \sigma &= \cos\theta \partial_x \sigma +\sin\theta \partial_y \sigma=0\\
+\partial_a \sigma &= -\sin\theta \partial_x \sigma +\cos\theta \partial_y \sigma
+\end{align}
+
+After a bit of algebraic juggling we end up with
+\begin{equation}
+-I_m=\sigma\nabla^2 \phi + 
+\partial_x\sigma (\partial_x \phi - \tan \theta \partial_y \phi)
+\end{equation} 
+
+
+In order to estimate the influence
+of this summand on the result, we shall make some toy models which
+represent the variation of $\sigma$ along the apical direction.
+
+
+
+
+
+
+For a carefull and complete derivation and discution of the CSD, 
+see \cite{Bedard11}. We start with the charge conservation equation,
+\begin{equation}
+\nabla \cdot \Jd + \frac{d \rho}{d t} =0.
+\end{equation}
+
+
+
+\bibliographystyle{plain}
+\bibliography{BiblioReportes01}
+
+
+
+\end{document}

@@ -1,0 +1,81 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+
+
+\begin{document}
+
+\section{CSD and centers of mass}
+
+
+For certain purposes the representation of the measured data in CSD
+representation has advantages over the recorded LFP. One is
+that it minimizes the volume-conducted activity, pointing more accurately
+to the sites in which electrical-measurable events are taking place %\cite{Mitzdorf85}.
+We have another important reason to resort to this representation:
+as it names implies, it represents a \emph{density}, so, it indicates
+quantity of something per unit volume. Thus we are able to apply certain
+concepts in a rigorous, physically interpretable manner.
+
+Densities are instrumental for taking vector averages (``centers
+of mass''). A charge or flux density is in this regard no different to a
+mass density and can be used to obtain significant ``centers'' of
+physical quantities. In our case, this are the ionic flows across
+the membrane, which, looked macroscopically from the extracellular
+space, appear as sinks and sources. These are evidence of neuronal
+activity. It is our interest to locate a
+putative ``instantaneous center'' of said activity and then track
+trajectories which could sintetize the sequence of diverse units
+incorporating themselves to the action or spaciotemporal variations of
+said action across units.
+
+Sinks and sources are separated by a zero set. This is an advantage
+over the LFP representation, in which any particular value has no
+interpretative significance, and only \emph{differences} between values
+have meaning. 
+The zero  set is typically a union of regular 
+curves which separate sources from sinks. As we choose a numerical error
+tolerance, these sets appear in our measurements conformed by disjoint
+components. This permits us two confirm measurements that reveal
+the expected polar activity of neurons
+at each frame from the data. We have observed that each disjoint component
+of each sources and sinks corresponds roughly to the poles of firing neurons
+or superpositions of them (although sinks/sources of lower intensity
+can appear below the firing threshold also).
+
+Each of these components has its own  ``center of mass'', which can be
+calculated in the usuall maner. We shall call them the ``instantaneous local
+centers of activity'' or ILCAs for short. These ILCAs have an apparent
+movement as sinks and sources appear and fade, so we can track their
+position and intensity frame by frame, producing a putative trayectory,
+which could reveal displacement of activity or the succesion of recruiting
+neurons. 
+Thanks to the high frecuency sampling of our experiments, we can observe
+very small displacements of this centers of activities. Care must be taken
+to interpret this displacements below the electrode scale.
+
+Each trayectory thus obtained encodes and synthetizes the following information:
+\begin{description}
+\item[Start] location and time of the apparition of the source/sink.
+\item[Path] successive locus and timestamps of the putative centers.
+\item[Intensity] the time dependent integrated density of the source/sink.  
+\item[End] location and time of the disappearance of the source/sink.
+\end{description}
+
+\begin{figure}
+  \includegraphics[width=0.9\textwidth]{LFP_700_more_selected_electrodes_01.svg}
+  \caption{LFP recorded from experiment at the onset of the epileptic activity. Selected electrodes from which electrophysiological recording is shown are marked  along various transveral lines to CA. The data is presented as recorded, without any smoothing or denoizing. }
+
+
+\begin{figure}
+  \includegraphics[width=0.9\textwidth]{LFP_700_more_selected_electrodes_01.svg}
+  \caption{The burst of epileptic activity at the line labeled A-F on previous
+    figures. Here we show it after denoizing in both the LFP and CSD representation, for
+    comparition. The spatial and temporal spread of CSD is much lower, thus
+  allowing a precise location of activite areas. We observe the tipical dipolar structure of firing neurons and many polar invertions along the time axis.}
+  
+  
+
+
+\end{document}
+

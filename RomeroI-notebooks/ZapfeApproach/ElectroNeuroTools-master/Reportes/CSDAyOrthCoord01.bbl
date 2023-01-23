@@ -1,0 +1,41 @@
+\begin{thebibliography}{1}
+
+\bibitem{Bedard11}
+C.~B\'edard and A.~Destexhe.
+\newblock Generalized theory for current-source-density analysis in brain
+  tissue.
+\newblock {\em Phys. Rev. E}, 84:041909, 2011.
+
+\bibitem{Holsheimer87}
+J.~Holsheimer.
+\newblock Electrical conductivity of the hippocampal ca1 layers and application
+  to current-source-density analysis.
+\newblock {\em Exp. Brain Res.}, 67:402, 1987.
+
+\bibitem{Leski11}
+S.~Leski, K.H. Pettersen, B.~Tunstall, G.T. Einevoll, J.~Gigg, and D.K.
+  W\'ojcik.
+\newblock {Inverse Current Source Density Method in Two Dimensions: Inferring
+  Neural Activation from Multielectrode Recordings}.
+\newblock {\em Neuroinform}, 9:401, 2011.
+
+\bibitem{Mitzdorf85}
+U.~Mitzdorf.
+\newblock {Current Source-Density Method and Application in Cat Cerebral
+  Cortex: Investigation of Evoked Potentials and EEG Phenomena}.
+\newblock {\em Physiol. Rev.}, 65:37, 1985.
+
+\bibitem{Pettersen2006}
+K.H. Pettersen, A.~Devor, I.~Ulbert, A.M. Dale, and G.T. Einevoll.
+\newblock {Current-source density estimation based on inversion of electostatic
+  forward solution: Effects of finite extent of neuronal activity and
+  conductivity discontinuities}.
+\newblock {\em J. Neurosci. Meth.}, 154:116, 2006.
+
+\bibitem{Vaknin88}
+G.~Vaknin, P.G. DiScenna, and T.J. Teyler.
+\newblock A method for calculating current source density (csd) analysis
+  without resorting to recording sites outside the sampling volume.
+\newblock {\em J. Neuros. Meth.}, 24:131, 1988.
+
+\end{thebibliography}

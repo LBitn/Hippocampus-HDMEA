@@ -1,0 +1,88 @@
+\documentclass[xetex,mathserif,serif]{beamer}
+
+%\usepackage[numberedbib]{apacite}
+%\usepackage[english]{babel}
+\usepackage{natbib}
+\usepackage{bibentry}
+\bibliographystyle{apalike}
+
+
+\begin{document}
+  \begin{frame}
+    \frametitle{CSDA}
+    Our measurements allow us to calculate the \emph{Current Source Density}
+    of the electric field potentials  recorded in the experiments.
+    The fundamental equation which relates this two quantitis 
+    in an ohmic, resistive and uniform medium,
+    is: 
+    \begin{equation}
+      \sigma_e \nabla^2 \Phi = -I_m.
+    \end{equation}
+    Here $\sigma_e$ is the electric conductivity of the extracellular medium
+    and $I_m$ is the density of current sources. A deeper approach
+    can be seen at \cite{Bedard11}.
+    
+  \end{frame}
+
+   \begin{frame}
+     \frametitle{Implementation: de-noising the Data}
+     A direct application of any Laplacian is not viable, since
+     this operator is extremely sensitive to noise. The noise is coupled
+     to the line power ($\approx$ 60Hz). 
+     A (temporal) Gaussian convolution takes care
+     of this and other high frequency structures.
+     
+  \end{frame}
+  % etc
+
+
+  \begin{frame}
+     \frametitle{Implementation: de-noising the Data}
+     The Laplacian implementation is, in this discrete form, a convolution
+     with the following matrix. This is in accordance with the
+     scales that we are interested in. Compare with \cite{Vaknin88}.
+    
+  \end{frame}
+
+
+  \begin{frame}
+     \frametitle{Centre of Mass Dynamics}
+     Following \cite{Manjarrez07}, we desire to follow a putative CoM,
+     to discover how activity propagates along the CA.
+     
+  \end{frame}
+
+
+  
+
+  \begin{frame}
+     \frametitle{Implementation: naïve search}
+     A direct approach proves useless, as the activity occurs at separated
+     sites along CA1 and CA3. The concave geometry of our slice
+     produces a centre of mass outside the CA, and without physiological
+     interpretation.
+  \end{frame}
+
+
+  
+  \begin{frame}
+     \frametitle{Implementation: disjoint set detection.}
+     It is better to focus on the \emph{disjoint sets} revealed by
+     the CSDA. We have a clear separation between sources and sinks,
+     and every set would have a centre of mass inside the CA, thus
+     allowing us to follow the propagation of activity on different
+     components \emph{simultaneously}.
+     
+  \end{frame}
+
+  
+  \begin{frame}{Bibliography}
+   % \bibliographystyle{apacite}
+    \bibliography{BiblioReportes01}
+  \end{frame}
+
+
+  
+  
+\end{document}
+

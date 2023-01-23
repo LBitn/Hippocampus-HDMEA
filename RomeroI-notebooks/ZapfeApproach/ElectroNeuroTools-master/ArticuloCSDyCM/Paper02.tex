@@ -1,0 +1,64 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{lscape}
+\usepackage{mathptmx}
+\usepackage[scaled=.90]{helvet}
+\usepackage{courier}
+%\usepackage{lipsum}% just to generate filler text
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{longtable}
+
+\begin{document}
+
+
+\section{CSD for High density MEAs}
+
+The concepts presented here require first obtaining the CSD of the recorded LFP. Any method would conceptualy present the same utility, but thanks to the density and scales of the BioCAM 4096, in our case a ``classical'' numerical derivation of the CSD is the most adecuate route to take. A numerical Laplacian Operator which reduces the cross efect of rectangular grids is the convolution of the data with the following matrix \cite{Lindberg90}:
+\begin{equation}
+\nabla^2_{1/3}=(2/3)
+\begin{pmatrix}
+  0 & 1 & 0 \\
+  1 & -4 & 1 \\
+  0 & 1 & 0
+\end{pmatrix}
++1/3
+\begin{pmatrix}
+  0.5 & 0 & 0.5 \\
+  0 & -2 & 0 \\
+  0.5 & 0 & 0.5
+\end{pmatrix}  
+\end{equation}
+At the border we duplicate the last rows of data and take the results knowingly of the border effects. As this sort of operators are extremelly sensitive to noice, a Gaussian blur is applied before presenting the graphical data. This softening of the edges in the CSD image also represents our ignorance of the finer details of the components of the distribution (see section bla bla).
+
+
+More sophisticated methods such as iCSDA \cite{Leski2011} and kCSDA \cite{Potworowski2011} prove little advantage in estimating the sources under the ohmic, isotropic and homogeneous assumptios at the scales involved in these data, and turn out to be computer-costly for high density MEAs and dense temporal sampling. 
+
+
+
+\section{CSD and disjoint components}
+
+One of the most obvious uses of the CSD in place of the LFP has been overlocked, and this might have to do that samplings at lesser spatial density did not permit extending the implications of the concept of density, namely, that one of ``masses'', or, in this case, charges. Center of Mass Analysis (CMA) has been previously been used in order to track putative ``trayectories'' of the activity or information across neural tissue or even the whole brain \cite{Chao05, Manjarrez07}. In such works the choosen ``mass'' was an heuristic measure of activity adecuate for representing the corse-grain picture of displacement of activity or some unit of ``active information''. But these present the usual problem of justifing the choice maide on practical grounds. For calculating a vectorial average, the adecuate choice of wheights per vector is a density, a positive quantity that measures the amount of something per unit volume. Current Source Density, as it name implies, is the density of sinks and sources of charged current per unit volume. CSD sepparates naturally the measured activity into two distinct sets, namely, the set of all sources and the set of all sinks, separated by the zero set. This is in contrast to the LFP, where the zero value of the function has no solid meaning as electrical potentials can be measured to arbitrary ground values.
+
+A visual inspection of the CSD colormap at a given instant in time shows that both sources and sinks appear in rather large and significant patches. These appear to correspond to the expected double and triple poles of fyring neurons in structured tissue \cite{} and inspired us to sepparate the CSD subsets into their \emph{disjoint components}. This concept is used in mathematics to denote subsets of a geometric defined set that do not touch each other. Their rough correspondence to poles of fyring neurons would be most usefull in tracking the succesive locus of the activity.
+
+To clarify the concept and how we are we using it an example is in order. In figure \ref{ejemplodisjuntos} we show geometrical sets enclosed by simple curves as color patches, where every color indicates a Set. The set A consists of a single component, that means that one can make  path between any two points in the set that consist entirely of points of the same set. In contrast, the set B is made of two disjoint components, labeled B1 and B2. If one chooses a point in each of the components, one cannot draw a path joining them without leaving the set. But each one of those components is connected, meaning that if we choose the pair of points in one componet, then again we can trace a path joining them in the set. So the set B consists of two disjoint components, but each component can be regarded as a connected set on their own. Likewise the set C is made of three disjoint components. 
+
+CSD divides the set of measuring points into two subsets: the set of all sources and the set of all sinks, i.e, the set of all measuring points that have a CSD positive value, and the set of those who have a negative CSD value. The zero set is a border between them, but due to the finite precision of the measurement (and the validity of the mean field approach!) these sets can make contact with each other. Still, noice between patches corresponding to a single set could make a ``bridge'' between components, making identification of poles inexact. In order to avoid this we create a ``fat zero'' set of all the recording points whose CSD values are inside a small error interval around zero. This sepperates even more the components of the set, and helps us to simplify the following analysis. 
+
+\section{CSD and Center of Mass}
+
+Densities provide the adecuate conceptual tool to obtain ``Centers of Mass'' or vector averages. A density is a measure of a quantity per spatial spread, at precise locus in space. CSD has, in contast to mass density, negative values. But these signs are a matter of convention, it is more important to say that it has two different cualitative propiertes and that sepparates the domain into two sets. Each set has then a total ``mass'', the integral of the absolute value of the CSD. Then the concept of ``Center of Mass'' applies naturally. Once that we sepparate the two sets and apply the concept in each one independently, even the sign convention of the densities seases to be a problem, as it cancels in the formula for the CM:
+\begin{equation}
+\langle x(t) \rangle =\frac{\sum_j x_{j} (t) I_{j} (x,t)} {\sum_j I_{j}(x,t)}
+\end{equation}
+An instantaneous Center of Mass, thus calculated, would present little if none physiological interpretation. The activity could be spread over non-convex sets (which would include disjoint and concave sets) and so the vector average, the Center of Mass, would be located in points where there is no activity. In our example the use of the CA complex of the hippocampus proves an ideal example. This structure is concave, and during epileptic burst, can have activity spread over many disjoint sites simultaneously. We must not take out of sight the phenomena which is producing the CSD distribution: neurons have a finite size, and the effect of their action a finite extent. Every patch that we can delimit as a disjoint component of the Sources/Sink sets indicates a coherent, joint active group of units. A center of mass for each disjoint component would then have much  
+
+
+
+
+\end{document}
+

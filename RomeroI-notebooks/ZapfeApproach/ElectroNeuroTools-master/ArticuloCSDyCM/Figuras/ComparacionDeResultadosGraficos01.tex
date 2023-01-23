@@ -1,0 +1,66 @@
+\documentclass{article}
+
+
+
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[margin=1in]{geometry}
+\usepackage{lscape}
+\usepackage{mathptmx}
+\usepackage[scaled=.90]{helvet}
+\usepackage{courier}
+
+\usepackage{grapicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\title{Reporte: Comparación de Resultados Gráficos}
+
+\author{Karel Zapfe}
+
+\begin{document}
+
+\maketitle
+
+\section{LFP y CSD}
+
+Es usual encontrar en cualquier artículo donde se haga CSDA una justificación de la
+representación de la actividad en términos de la resolución y el contraste que provee la densidad de fuentes de corriente en comparación con el potencial de campo local. Podemos pensar que el decaimiento de las dos señales respecto a las cargas eléctricas es suficiente razón para justificar esta decisión, siendo el del potencial como $1/r$ mientras que la densidad es de $1/r^3$. No está de más llevar a cabo una comprobación experimental, dado que estas tazas de decaimiento son obtenidas de casos ideales y despreciando efectos de memoria o no lineales que pueda tener el ambiente encefaloraquideo articifial o los mismos tejidos neuronales. Por ello decidí hacer una comprobación de esta suposición básica usando como datos un ataque inducido por 4AP. El evento escogido tiene una duración total de  aproximadamente $200 ms$ durante el cual una aparente ``ola'' de actividad recorre todo el cuerpo CA. La comparación que primero sugiero es la siguiente: consideremos la ``actividad total'' registrada en cada electrodo a lo largo de este intervalo. Podemos pensar que la amplitud de la señal rectificada es una medida de actividad adecuada, y simplemente sumar (integrar) sobre el tiempo para cada intervalo. Hacemos eso en ambas representaciones, la del potencial y la de la densidad de corriente. Los resultados de este cálculo son mostrados en la figura \ref{AbsInt}. Lo esperado ocurre: la densidad de corriente muestra mayor contraste y menos dispersión que el potencial de campo. Más aun: el nivel de ruido es significativamente menor en la primera y es posible distinguir (levemente) el Giro Dentado, a pesar de su poca actividad durante este experimento. Es importante señalar que esta representación, además, nos indica con mucha precisión los sitios de CA que actuaron de manera más fuerte (mas intensa, más veces) durante el ataque.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{AbsIntegLFP01.pdf}
+        \caption{Potencial Eléctrico Local}
+        \label{IntAbsLFP}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{AbsIntegCSD01.pdf}
+        \caption{Densidad de Fuentes de Corriente}
+        \label{IntAbsCSD}
+    \end{subfigure}
+    \caption{La integral temporal de la actividad electrofisiológica en dos representaciones, a la izquierda, el potencial eléctrico rectificado, a la derecha, la densidad de fuentes de corriente rectificada. Las escalas de color se han normalizado al máximo valor registrado, a fin de hacer la comparación de contrastes más clara. CA3,CA2 y CA1 son distinguibles en ambos casos, pero a la dereceha la actividad se concentra en una capa más delgada y areas más reducidas. } 
+\end{figure}
+
+La señal rectificada variaciones respecto a un valor de referencia, que en el caso del potencial es arbitrario. No está de más comparar estas integrales con la integral de la señal ``natural'', donde esperariamos ver la naturaleza polar de las cosas, si las variaciones temporales no se cancelan totalmente. Efectivamente eso es lo que obtenemos en la figura \ref{IntSign}. Desgraciadamente si se cancela mucho del contraste, por la variación temporal de los dipolos efectivos producidos por los potenciales de acción.
+En estas imagenes el arco que contiene a CA2 es la zona más discernible, y la estabilidad de la polaridad de la actividad es muy evidente. La representación en potencial parece suavizada, mientras que la densidad es muy sensible a bordes y ruido. El resto del cuerno es apenas discernible. 
+
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{IntegLFP01.pdf}
+        \caption{Potencial Eléctrico Local}
+        \label{IntAbsLFP}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{IntegCSD01.pdf}
+        \caption{Densidad de Fuentes de Corriente}
+        \label{IntAbsCSD}
+    \end{subfigure}
+    \caption{Las integrales sin rectificar, es decir, signadas. Una vez más, a la izquierda, potencial, a la derecha, densidad. Una vez más, la escala de color fue normalizada para facilitar la comparación. } 
+\end{figure}
+
+
+\end{document}

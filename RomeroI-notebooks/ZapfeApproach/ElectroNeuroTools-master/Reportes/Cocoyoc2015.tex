@@ -1,0 +1,141 @@
+\documentclass{beamer}
+
+
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{color}
+\usepackage{ragged2e}
+
+\justifying
+
+\decimalpoint
+
+\usefonttheme{serif}
+
+\newcommand{\dd}{\, \mathrm{d}}
+\newcommand{\xq}{\, \mathbf{x}}
+
+\begin{document}
+
+
+\begin{frame}
+  \frametitle{De las medidas eléctricas a lo subyacente:} 
+  \begin{equation}
+    \varphi(\xq)
+    =\int \frac{1}{4\pi\epsilon}
+    \frac{\rho(\xq')}{|\xq-\xq'|} \dd^3 \xq'  
+  \end{equation}
+    \begin{equation}
+      \frac{\partial \rho}{\partial{t}}(\xq)=
+      -\frac{\sigma}{\epsilon}\rho(\xq)
+    \end{equation}
+  \begin{center}
+  \begin{tabular}{ccc}
+   \textcolor{red}{LFP} & 
+   \includegraphics[width=0.3\textwidth]{Decaimiento01.pdf} &
+   \textcolor{blue}{CSD}
+  \end{tabular}
+  \end{center}
+  {\tiny Nicholson \emph{et} Freeman , J.   Neurophys. 38, 356 (1975)\\
+         Bédard \emph{et} Destexhe, PRE 84, 041909 (2011) }
+\end{frame}
+
+
+
+
+
+\begin{frame}
+\frametitle{Un cero bien localizado.} 
+Tanto en la densidad de cargas, como en la densidad de fuentes de corriente
+hay una distinción clara entre \emph{pozos} y \emph{fuentes}.
+No es el caso para el LFP, que mide las cosas a partir de una ``tierra''
+arbitraria.
+
+\begin{tabular}{cc}
+      \includegraphics[width=0.4\textwidth]{VectoresRojos_990.png} &
+    \includegraphics[width=0.55\textwidth]{CSD_SeminarioJunio-cb-732.png} 
+\end{tabular}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Promedios Vectoriales o \emph{Centros de Masa}}
+  \begin{equation}
+    \langle \xq(t) \rangle=\sum_k m(\xq_k)\xq/\sum_k m(\xq_k)
+  \end{equation}
+  
+  \begin{center}
+    \includegraphics[width=0.75\textwidth]{ImagenManjarrez01.jpg}
+  \end{center} 
+  
+ \begin{flushright}
+  {\tiny  Manjarrez \emph{ et all}, Brain Research, 1145, 239 (2007) \\
+      Chao \emph{ et all}, Neuroinformatics, 3, 263 (2005) }
+  \end{flushright}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Centros de Masa en Geometrias Cóncavas} 
+\begin{center}
+  \begin{tabular}{cc}
+    \includegraphics[width=0.45\textwidth]{HippocampusFromAtlasRotado.png} &  
+    \includegraphics[width=0.45\textwidth]{DiagramaCAetDGCSDEspanol01.png}   
+   % \includegraphics[width=0.55\textwidth]{CSD_CM_SeminarioJunio-732.png}
+  \end{tabular}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Centros de Masa en Densidades de Fuentes}
+  Podemos dividir cada conjunto (pozos o fuentes) en sus componentes
+  disjuntas.
+\begin{center}
+  \begin{tabular}{cc}
+    \includegraphics[width=0.55\textwidth]{CSD_SeminarioJunio-732.png} &  
+    \includegraphics[width=0.35\textwidth]{ComponentesDisjuntosCSD01.png}   
+   % \includegraphics[width=0.55\textwidth]{CSD_CM_SeminarioJunio-732.png}
+  \end{tabular}
+\end{center}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Un conjunto instantaneo de CM}
+  El CM de cada \emph{Componente Disjunto} indica un putativo ``centro de actividad'' rastreable,
+  localizado mucho más cerca de donde
+  la señal es más fuerte. Esto es interpretable como una serie de ``focos''
+  activos localizados de mayor actividad.
+  \begin{center}
+   \includegraphics[width=0.65\textwidth]{CSD_SeminarioJunio-900.png}   
+   \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Trayectorias de los CM}
+  Usando un algorítmo que conecte los CM cuadro por cuadro comienzan a
+  formarse \emph{``trayectorias''} 
+  con precisión de 1/7022 de segundo.
+\begin{center}
+   \includegraphics[width=0.45\textwidth]{TrayectoriasLargas-Cocoyoc-02.png}   
+   \end{center}
+\end{frame}  
+
+\begin{frame}
+  \frametitle{Posibles implicaciones para el conectoma funcional}
+
+  De esta serie de datos de alta densidad, ordenados por aparición,
+  intensidad, y criterio anatómico, debe ser posible descubrir conexiones
+  funcionales dentro de CA3. El formalismo es general, es aplicable
+  a otras estructuras.
+
+  (Estos ejemplos fueron creados usando actividad epileptiforme inducida por
+  4AP.)
+  \end{frame}
+    
+
+\end{document}

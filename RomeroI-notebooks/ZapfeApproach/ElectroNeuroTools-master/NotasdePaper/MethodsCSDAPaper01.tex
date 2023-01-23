@@ -1,0 +1,96 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+%\usepackage{siunitx}
+
+\newcommand{\rd}{\mathrm{d}}
+%\newcommand{\micra}{\micro\meter}
+\DeclareMathOperator{\arcsinh}{arcsinh}
+
+
+\title{Numerical Methods}
+
+%\bibliographystyle}{plain}
+
+\begin{document}
+
+\section{Data Analysis}
+
+...OJO CSDA
+
+We recorded spontaneous activity during 5 minutes. Data sampled at 7 KHz was acquired on a PC with the program BrainWave (3Brain Co., Wädenswil, Switzerland) and stored for offline analysis. A normal recording would consist of 15 GB for 5 min of activity. This was next analyzed with custom scripts written either in Matlab (The Mathworks, Natick, MA, USA) or Julia (NumFocus, Austin, TX, USA \cite{Bez2017})). For CA3 fast ripple detection, we isolated events with high amplitude using a criterion of 2 standard deviations above the mean standard deviation of baseline in consecutive 50 ms sweeps. A histogram with the distribution of standard deviations were constructed for each time window and we could therefore sort out electrodes with or without activity and the ones with saturating signals. A threshold was set for the active electrodes, excluding saturated ones. After automatic detection, we manually selected the electrodes that corresponded to the different regions of the hippocampus, hilus, and DG with the aid of photographs taken to the slices on the matrix, with a stereoscopic
+microscope.
+
+ Signals from the electrodes with activity were band-passed filtered between 250 -600 Hz using a fifth order butterworth filter, and then rectified. A 5 SD threshold was used to detect high amplitude peaks with at least 3 cycles of oscillations (i.e., 6 peaks). Linear trends were removed from their cumulative sum in order to identify abrupt changes in the slope of the signal. The first abrupt change indicated the exact time of initiation of the event and the second one, its termination. Because FRs have a mean incidence of 0.4 Hz and duration of 50 ms (Dzhala and Staley, 2004; Foffani et al., 2007) for each detected event we stored raw and filtered samples starting 100 ms before the first peak until 200 ms after the last peak for further analysis. We next calculated power spectra for each raw event to confirm its classification as a FR, in which case it should present a peak frequency between 250 and 600 Hz.
+
+
+
+\section{CSDA}
+            
+ We take the usual isotropic, homogeneous, ohmic assumptions so that CSD is given by the Laplacian of the potential field:
+
+ \begin{equation}
+-\sigma \nabla^2 V =C
+ \end{equation}
+ 
+
+In order to obtain the best approximation to the CSD in the presence of saturated or otherwise failing electrodes, we used the kernel CSDA technique (Potworowski et al. 2012). From here on we use the same notation that they use.  The kernel method allows one to calculate a ``best fitting distribution'' through linear operations over the list of LFP values without the need of a regular grid. This technique also minimizes the adverse effects that a bad electrode has on its neighbors when numerical differential operators are used. To use this method one must first search the optimal parameters for the model functions. This is done by taking a known CSD from differential operators on a perfect subset of an experiment. We tested both the Gaussian and hard step distributions for the model sources, the latter gave sharper CSD distributions, so we settled for those. They are given in two dimensional space by:
+
+\begin{equation}
+  \tilde{b}_j(x,y)=
+  \begin{cases}
+    1, & ((x-x_j)^2+(y-y_j)^2 \leq R^2 \\
+    0, & \mbox{otherwise}
+    \end{cases}
+\end{equation}               
+
+where $(x_j,y_j)$ is the point where our distribution is centered. 
+Correspondingly, the LFP model function would be:
+
+\begin{equation}
+  b_j(x,y)=\frac{1}{2\pi\sigma}{\iint} \rd x`\rd y`
+  \frac{\arcsinh(2h)b_j(x',y')}{\sqrt{(x_j-x')^2+(y_j-y')^2}}
+ \end{equation}               
+
+From now on, the subindex $j$ indicates elements of the valid electrode set. We shall also in the following use the following shorthand notation for the coordinates of a certain electrode labeled $j$: $q_j:=(x_j,y_j)$.
+ 
+After testing the $h$ and $R$ parameters over a range of plausible values we settled for $R=10.5 \mu m $ and $h=350 \mu m$ (the thickness of the slice). The method is specially robust against variations in the second parameter. For obtaining the model potential functions we used as limits of integration $230 \mu m$ in each direction. The numerical integration was done with the Cubature package  for Julia. We selected the h-adaptive with relative error tolerance of 0.0001 \cite{Genz1980}. (In our code all the calculations are made using the separation between electrodes as the unit of length).  
+  The kCSDA method allows us to neglect completely certain subsets of electrodes and work with a non-regular grid, so we subtracted from the list of the whole set of electrodes those who appear saturated according to the criterium described above. Using this reduced list we obtained the two kernel operators described in \cite{Potworowski2012} for each experiment. As long as the saturated electrode list is comprehensive and static, this has to be done only once per experiment. The first kernel operator projects the raw signal over the space of the potential model functions. This operator is given by
+
+ \begin{equation}
+    K(q_j,q_k)=\sum_l b_l(q_j)b_l(q_k)
+ \end{equation}
+	
+ The second operator maps the space of the CSD functions over the space of LFP
+ functions. This is given by:
+
+ \begin{equation}
+   \tilde{K}(q_j,q_k)=\sum_l b_l(q_j)\tilde{b}_l(q_k)
+ \end{equation}
+
+In both cases the sums are performed over the valid electrode list.
+The last step is to map the raw signal, frame by frame, to the CSD model function space:
+
+\begin{equation}
+  C(t)=\tilde{K}^TK^{-1} V(t)
+\end{equation}
+
+The CSD so obtained is quite smooth by construction, so we do not apply further smoothing filters to the graphics presented.
+
+
+\begin{thebibliography}{20}
+
+
+
+  \bibitem{Bez2017}  Jeff Bezanson, Alan Edelman, Stefan Karpinski, Viral B. Shah:
+            ``Julia: A fresh appproach to numerical computing'', SIAM Review, 59(1), 65-98, (2017).
+
+  \bibitem{Potworowski2012} Jan Potworowski, Wit Jakuczun, Szimon Łeski, Daniel Wójcik:
+            ``Kernel Current Source Density Method'', Neuronal Computation 24, 541-575, (2012). 
+
+   \bibitem{Genz1980} A.C. Genz and A.A. Malik,  ``An adaptive algorithm for numeric integration over an N-dimensional rectangular region'', J. Comput. Appl. Math., vol. 6 (no. 4), 295-302 (1980).
+
+  \end{thebibliography}
+  
+\end{document}

@@ -1,0 +1,44 @@
+Center of Mass and CSDA during epileptic outbursts in the Hippocampus of the Rat.
+
+Rationale:
+Epileptic activity on slices from the hippocampus of the rat is
+induced to obtain high density data for the electrophysiological
+recordings of action potentials on the soma layers.
+The burst, with multiple population spikes,
+does not occur homogeneously on the somatic strata, instead,
+it propagates rapidly along the CA structures in a wave-like fashion.
+A Current Source Density Analysis provides finer spatial
+resolution from LFP data and could help us to understand the
+important loci where the signal travels. A center-of-mass analysis would
+record the trajectories of the vector-averaged signal.
+
+Methods:
+
+We have recorded the LFP of various slices of the hippocampus on
+a 64 by 64 micro-electrode array (BioCAM 4096)  under the influence
+of 4-Aminop.... This data was then cleaned of noise and the relevant numerical
+operations performed on it in order to obtain the CSD. Then we developed
+a method to follow the vector-averaged centers of disjoint components
+of the CSD data. 
+
+Results:
+
+We could observe that the propagation of the activity of
+epileptic burst on the hippocampus does not travel along a single
+defined wave front, but that it splits into disjoint components and
+they simultaneously run along various parts of the CA region. This could
+point to a sort of "distributed signal analysis" inside the hippocampus
+or could be a characteristic of epileptic activity.
+
+
+Conclusions:
+
+The epileptic activity occurs in the CA region in localized disjoint
+components that propagate in wavelike fashion. The better spatial
+resolution that provides the CSDA combined with a clear
+distinction of disjoint sources and sinks permits us to follow
+each of these coordinated groups. This paves the way for
+comprehension of the details in which information travels and
+is processed in the hippocampus. 
+
+

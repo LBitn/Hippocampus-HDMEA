@@ -1,0 +1,24 @@
+\documentclass[12pt]{standalone}
+%\usepackage{lmodern}% http://ctan.org/pkg/lm
+\usepackage{amsmath}
+\usepackage{cmbright}
+\SetSymbolFont{largesymbols}{normal}{OMX}{iwona}{m}{n}
+
+\DeclareMathSizes{12}{60}{32}{32}
+
+\DeclareMathOperator{\arcsinh}{arcsinh}
+
+\newcommand{\rd}{\mathrm{d}}
+
+
+\begin{document}
+$\displaystyle 
+  b_j(x,y)=\frac{1}{2\pi\sigma}
+  \iint \! \rd x \rd y \tilde{b}_j (x, y)
+  \arcsinh \biggr(
+  \frac{2 h } {\sqrt{(x-x_j)^2+(y-y_j)^2}}
+  \biggl)
+$
+\end{document}
+
+

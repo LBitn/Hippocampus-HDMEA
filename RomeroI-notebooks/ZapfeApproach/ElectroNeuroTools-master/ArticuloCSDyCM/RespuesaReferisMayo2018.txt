@@ -1,0 +1,68 @@
+Sobre el punto 2):
+=============================
+
+Cambiemos la sección completa a esto:
+
+The CSDA was done following the next steps. First, discard
+unusable channels, then smoothing the harder edges, and as last step
+we apply  finite difference operator that gives the CSD.
+
+Standard criteria for falling electrodes where used: if an electrode showed
+less variance than  the  noise levels it was declared saturated and its signal
+replaced with the average of its 8 neighbours. 
+Afterwards, a Gaussian smoothing
+filter  with a half-width of 42 micrometers was 
+applied to reduce the effect of hard edges on the data.
+
+We conducted bidimensional CSDA by convolution with the following operator:
+(**poner la ecuación de la que se quejó M. de la P.  aquí **)
+This operator is part of a family of convex finite difference operators that
+reduce the cross effects of the rectangular grid. It is as close as possible
+to a rotational invariant operator that performs better on this kind of 
+rectangular ordered data (Lindenberg 1990). 
+
+
+The CSD representation lends itself to separation of disjoint components,
+as we can categorize the data in three sets: Sources, Sinks, and Neutral.
+A connected component in this context would be a patch that can be trailed by paths
+inside itself. The Sources or Sinks are sepparated by each other and by
+the neutral set, so they are disjoint sets with various connected components. In order
+to obtain the sepparation we defined a threshold value above the noise level
+of the CSD signal and used the band defined above and below zero by this value
+as the neutral set. This sepparates the signal into three sets: Sources, Neutral, and
+Sinks. 
+Then we applied to the Sources and Sinks set a single pass
+algorithm to detect their disjoint  connected components (Vincent and Soille, 1991).
+The vector average of each one of these components produces a Center of Mass,
+that can be used to trace a putative displacemente of activity along
+the tissue, and this in its turn can be used to obtain the instanteous velocity
+of displacement (Zapfe et al 2015). All the code is written on the
+open language Julia (Bezanson et al, 2017). Detailed and formal steps
+are to be published
+in a following paper, and the code is avaible and commented with examples  in a
+Jupyter Notebook upon request (a complete version to be published as companion
+to the following paper).
+
+
+Sobre el punto 3)
+===========================
+
+
+Entre las lineas 271 y 288 de la versión de prueba tenemos que hacer unas
+aclaraciones.
+
+The instantaneous velocities of the Center of Mass can cover a range
+of different phenomena, which can account for various modes
+of transmission of activity. Our Center of Mass approach
+is centered on short-distance effects,
+namely ephactic and gap junctions, and even displacement
+of action inside the cells themselves. Long axonal transmission is
+outside the effects measured by this analysis, but other forms of
+"displacement of activity" may be encounterd in this way.
+
+
+
+Bibliografía Nueva:
+
+ Vincent, Luc; Soille, Pierre (June 1991). "Watersheds in digital spaces: an efficient algorithm based on immersion simulations". IEEE Transactions on Pattern Analysis and Machine Intelligence. 13 (6): 583. doi:10.1109/34.87344.
+

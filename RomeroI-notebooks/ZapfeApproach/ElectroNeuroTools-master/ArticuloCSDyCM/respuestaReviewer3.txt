@@ -1,0 +1,42 @@
+Coments from reviewer marked with **this**
+
+# Mayor Points
+
+## We enriched the Introduction citations with the following references:
+
+[Kuo and Sloan 2005] Frances F. Kuo and Ian H Sloan: "Lifting the curse of dimentionality", Notices of the AMS, 52, 1320 (2005)
+
+[Syed 2014] Syed MN. Georgiev PG. Pardalos PN: “Blind Signal Separation Methods in Neuroscience”, Neuromethod Book Series (2014) 91:291-322.
+
+[Búszaki 2004] Búszaki G. "Large Scale Recording of Neuronal Ensambles", Nat. Neurosciences, (2004) 7:446-51
+
+[Csicsvari 2003] Csicsvari J. et al. : "Massively parallel recording of unit and local field potentials with silicon-based electrodes.", J. Neurophysiol. 90:1314–1323 (2003). 90:1314–1323
+
+[Hyvarinen 2000] Hyvärinen A, Oja, "Independent Component Analysis: Algorithms and Applications", Neural Networks (2000) 13:411-430, https://doi.org/10.1016/S0893-6080
+
+[Herreras 2013]  Herreras O and Fernandez-Ruíz A: "Identifying the synaptic origin of ongoing neuronal oscillations through spatial discrimination of electric fields", Front. in Comp. Neuroscience, (2013) 7:5
+
+[Makarov 2010] Makarov VA, Makarova J, Herreras O: "Disentanglement of local field potential sources by independent component analysis" J. Comp. Neuro. (2010) 29:445-457.
+
+[Lopes 2013] Lopes-dos-Santos V. Ribeiro S. and Tort ABL: "Detecting cell assemblies in large neuronal populations" J. Neuro. Meth. (2013) 220:149-166
+
+[Anastassiou 2011]  Anastassiou CA, Perin R, Markram H  and Koch C: " Ephaptic coupling of cortical neurons", Nat. Neuro (2011) 14:217-24
+
+
+## We rewrote the whole Matherials and Methods Section
+
+## Also new citations in this section
+
+[Einevoll 2013] Einevoll GT. Kayser C., Logothetis, NK & Panzeri S. "Modelling and analysis of local field potentials for studying the function of cortical circuits. " Nat. Rev. Neurosci. (2013) 14:770–785. 
+
+[Gratiy 2017]  Gratiy SL,  Halnes G,Denman D,  Hawrylycz MJ ,  Koch C,  Einevoll GT,  Anastassiou CA: "From Maxwell's equations to the theory of current-source density analysis", European J. Neuroscience (2017) 45:1013-23
+
+[Bedard 2009] Bédard C & Destexhe A. "Macroscopic models of local field potentials and the apparent 1/f noise in brain activity." (2009) 
+Biophys. J., (2009) 96:2589–2603. 
+
+### dCSDA
+
+Justificar el Gaussian Spatial Smoothing on "MEAN FIELD APPROACH" Grounds.
+
+
+# Minor Points (specifics)

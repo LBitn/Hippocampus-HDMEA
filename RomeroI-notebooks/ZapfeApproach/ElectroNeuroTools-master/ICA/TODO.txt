@@ -1,0 +1,32 @@
+Herreras, plática 20170308
+================================
+
+
+* Podemos hacer discriminación espacial.
+* Va a haber traslape de generadores por similitud
+* ICA funciona "explicando" la variancia de las señales originales.
+* Si un "generador" tiene demasiada variancia, acapara la "explicación".
+* Traslape temporal de las señales agrupa generadores: no podemos
+distinguir generadores que tengan casi la misma respuesta, aunque
+haya desface.
+* Colas, tanto espaciales como temporales, nos pueden ayudar a discriminar.
+* Actividad Coherente es mala para esto: preferimos actividad incoherente.
+* Un acto estimulado Coherente puede tener mucho máyor amplitud en el
+hueco de un cuerpo cóncavo que en el mismo cuerpo (especialmente cierto
+si es CSD).
+* Pon atencion cuando te hablén.
+
+
+
+
+Que hay que hacer
+=================
+
+* Escoger Electrodos Interesantes, Facia, CA3, ¿CA2, CA1 ?
+* Escoger un colchón de electrodos alrededor de esos electrodos interesantes.
+* Hacer ICA asi nomás
+* Quitar generadores de Ruido tal vez, o filtrar señal.
+* Volver a hacer ICA
+* Identificar Generadores POR INTERPRETACION FISIOLÖGICA (¿Herreras?)
+* Muchas cositas importantes.
+

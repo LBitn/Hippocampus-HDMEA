@@ -1,0 +1,20 @@
+Este es un ejemplo de como reencodear usando mencoder
+
+mencoder CentrodeMasaNaive02.mp4  -o Test.mpg -of lavf -ovc lavc  -lavcopts vcodec=mpeg2video
+
+-of := un contenedor de salida, usando lavf, que usa libavformat,
+que a su vez usa libavcodecs. Determina el contenedor por la extension.
+
+-ovc:= determina el codec, libavcodecs en este caso
+
+-lavcopts: las opciones especìficas para este caso.
+
+Otro ejemplo, a partir de una lista de Discr*png
+
+mencoder "mf://Discr*png"  -o Laplacian01.avi -ovc lavc -mf fps=10
+
+Para que R. Gut pueda ver tus movies en PIECEOFTRASH PowerPoint, tienes
+que reencodearlos usando ffmpeg para quicktime:
+
+ffmpeg -i CSD_500ms_framedrop5_01.mp4 -ab 192  Output01.mov
+

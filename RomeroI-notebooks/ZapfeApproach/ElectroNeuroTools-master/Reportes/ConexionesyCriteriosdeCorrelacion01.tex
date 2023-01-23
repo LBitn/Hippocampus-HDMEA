@@ -1,0 +1,229 @@
+\documentclass{article}
+
+%\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{amsmath}
+\usepackage[spanish]{babel}
+
+\usepackage{graphicx}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+
+
+\setmainfont[Ligatures=TeX]{Droid Serif}
+
+\newcommand{\Jd}{\mathbf{J}}
+\newcommand{\EF}{\mathbf{E}}
+\newcommand{\cond}{\boldsymbol{\sigma}}
+\DeclareMathOperator{\diver}{div}
+\DeclareMathOperator{\grad}{grad}
+
+\title{Criterios de Conexión causal entre GD y CA}
+\author{F. Ortiz,  WPK.Zapfe,  MA. Aviño }
+
+\begin{document}
+
+\maketitle
+
+
+\section{Introducción}
+
+En este momento, contamos con datos de alta densidad temporal
+y espacial de actividad eléctrica de rebanadas ventrales del 
+hipocampo de las ratas. Nuestras medidas son potenciales eléctricos
+ del medio extracelular inmediato a las estructuras de nuestro
+interés, es decir, el giro dentado (GD) y el \emph{cuerno de Amón} (CA). 
+En ese medio extracelular es posible detectar, de forma indirecta,
+los potenciales de acción, cambios abruptos en el potencial
+eléctrico, acción del disparo de las neuronas. Un criterio \emph{ad hoc}
+nos permite establecer un momento temporal asociado al pico
+del potencial de acción. La pregunta fundamental es la siguiente:
+¿Qué partes del GD hacen disparar a qué partes del CA? 
+Pragmáticamente esperaríamos que un disparo detectado en GD fuera seguido
+por uno en CA después de un intervalo de tiempo, entre 2ms  a 5 ms.  
+Si con nuestro criterio de detección de picos encontramos dichos eventos
+consecutivos, ¿qué tan significativo son como criterio de relación causal?
+Aquí mostramos tres gráficas con criterios de peso distintos y 
+discutimos brevemente sus virtudes y defectos.
+
+\section{Los disparos \emph{eco}}
+
+Para no empantanar ciertos términos, vamos a describir un putativo
+potencial de acción en CA como \emph{eco} si ocurre entre 
+2 y 5 milisegundos después que un disparo de GD. Este término
+no implicará ninguna causalidad, simplemente que ocurre dentro
+del intervalo de tiempo esperado para una conexión sináptica.
+Para darle un significado de conectividad plausible, necesitamos
+un criterio que establezca un nivel de causalidad entre los disparos.
+Los disparos eco como medida absoluta pueden ya indicar una cierta
+relación de este tipo entre GD y CA, así que proponemos, antes
+que nada, observar la gráfica de ecos meramente y ver si tiene
+algún sentido dentro de la fisiología ya conocida. En la figura 
+\ref{EcosTotales} presentamos dicha gráfica. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\textwidth]{ConexionesEcos01.png}
+\caption{ Los disparos ecos representados como lineas entre
+los electrodos involucrados. Los puntos violeta representan 
+electrodos debajo del GD, mientras que los negros
+debajo de CA. El grosor y nivel de rojo de las lineas indican
+el número de ecos totales encontrados. La linea mas gruesa
+representa 210 ecos, mientras que la más delgada uno solo. 
+Nótese lo poco homogéneo de la distribución. Los electrodos
+que no registraron ecos no aparecen. 
+}\label{EcosTotales}
+\end{figure}
+
+Notemos de esta primera figura lo poco homogéneo de la distribución.
+Mientras que hay 6 electrodos del GD fuertemenente conectados
+a diversas regiones de CA, la mayoría de los puntos registran muy pocos
+ecos, o cualquier tipo de actividad.
+Por otro lado hay un electrodo en
+la región infrapiramidal de GD que muestra altísima conectividad con
+la región media y distal de CA3c, con una buena parte de CA3b y el
+centro de CA3a. De igual forma podemos apreciar un grupo de vecinos
+en la frontera entre la cresta y la región infrapiramidal que
+muestra también una conexión similarmente fuerte a 
+las mismas regiones. El último electrodo de la región infrapiramidal
+Debajo de la cresta también encontramos un grupo de tres electrodos
+fuertemente conectados con las mismas regiones. En esta gráfica
+puede haber muchos ecos casuales, es decir, falsos positivos,
+dada la actividad notoria de todo CA, aún cuando GD parece 
+estar silente. En cierta forma, esta imagen no está adecuadamente
+normalizada a la actividad ``promedio'' de una región u otra y
+de ahí la gran variedad de pesos que encontramos. Aun así
+tiene información que puede ser analizada formalmente y
+dar resultados significativos. En particular convendría 
+hacer un análisis de la distribución de las conexiones así establecidas.
+Es conocimiento común que las redes que ocurren en fenómenos biológicos
+deben de presentar ciertas características generales, como son 
+robustez (estabilidad frente a perturbaciones o fallas), redundancia
+(nodos que duplican conexiones), y ser \emph{libres de escala}.
+Esto último implica que sus conexiones sigan cierta distribución estadística
+expresable como una ley de potencias con exponentes entre 1.4 y 3.
+Deberíamos de revisar si es el caso en esta primera aproximación. 
+
+La siguiente figura (fig. \ref{Jacard} muestra los ecos 
+después de  una normalización que propuso
+la profesora Aviño, cuyo resultante es conocido como 
+``coeficiente de similiaridad de Jaccard'', y esencialmente 
+intenta medir que tan iguales son dos conjuntos a su intersección. 
+En este caso estamos contando los ecos como una intersección de eventos
+entre GD y CA. A pesar de que este coeficiente ha sido usado en la literatura
+con propósitos similares, admitimos que encontramos su aplicación un 
+tanto dudosa para nuestro caso por lo siguiente: dada la gran actividad
+que presenta CA en relación a GD, estamos dividiendo el número
+de ecos por números muy  grandes que representan actividad que no esta
+relacionada de forma alguna con la conexión que estamos buscando. Dicho de 
+otra forma: interpretar los disparos ecos como una intersección de
+eventos entre dos posibles conjuntos de otros eventos no parece
+tener mucho sentido. De todas formas  hay que ver que posibles
+detalles revela la figura y ver su posible implicación fisiológica.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\textwidth]{ConexionesJacard01.png}
+\caption{ Los ecos divididos entre el la suma de disparos
+\emph{sin eco} entre los electrodos relacionados. De igual forma
+lineas más gruesas y más rojas indican valor más alto, sin embargo,
+la escala es diferente, dado que aquí el mayor valor posible sería uno.
+En esta gráfica los grosores están exagerados, dado que el el 
+coeficiente de Jaccard da valores muy bajos (del orden de milésimas).
+}\label{Jacard}
+\end{figure}
+
+Es notorio en esta segunda figura que los mismos electrodos muestran
+la misma conectividad alta que en los ecos crudos, sin embargo el 
+peso relativo que tienen es mucho más homogéneo. A su vez otros pares
+de electrodos cobran un peso mucho mayor, debido a la baja cantidad
+de picos registrados en ellos, en particular está el par que une
+a un elemento de la hoja suprapiramidal con el centro de CA3a. 
+Sin embargo no debemos de concederle aún excesivo valor a esto
+sin corroborar con otra serie de datos, pues puede ser un 
+artefacto debido a la baja actividad detectada en ambos sitios. 
+Por otro lado el tercer electrodo de derecha a izquierda de la región
+infrapiramidal muestra aún una conexión fuerte con el centro de 
+CA3a. Esta en particular puede ser ya una pista importante
+sobre cierto grupo de conexiones operando en estas regiones. Otra
+cosa que podría decirse de esta figura es que, siendo la normalización
+tan baja, permite una resolución visual más clara en la 
+estructura de abanico formada por los electrodos más conectados.
+
+Finalmente Karel propuso normalizar el número de ecos entre el número
+de \emph{ecos posibles}, esto es, el número menor entre los disparos
+de un electrodo en GD y otro en CA. Típicamente este resulta ser
+el correspondiente a GD, pero no siempre. Dado que no puede haber más 
+``ecos'' que el número menor de disparos en un par de electrodos, 
+esto nos normaliza los ecos a un valor entre 0 y 1 donde 0 es
+``ningun eco'' y 1 es ``todos los disparos tienen un eco o son un eco''.
+La figura \ref{MinimalCrit} muestra este criterio de peso en la
+gráfica.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\textwidth]{ConexionesPseudoCausales01.png}
+\caption{ Los ecos divididos el mínimo número de disparos
+ entre los electrodos relacionados. El peso máximo posible es
+1, siendo este que todos los disparos de un electrodo en  GD 
+tuvieron eco o que todos
+los disparos de CA fueron eco de otro electrodo. Una vez más,
+electrodos con un número muy bajo de disparos muestran excesivo
+peso, por lo que las lineas fuertes cerca de la cresta pueden
+ser un artefacto estadístico.
+}\label{MinimalCrit}
+\end{figure}
+
+La figura \ref{MinimalCrit}
+es notoriamente diferente de las otras dos. En particular
+muestra una conexión mucho más homogénea de todo el GD a la 
+región CA3c, y muestra conexiones muy fuertes en la cresta del GD 
+hacia varios electrodos de CA3c y la frontera con CA3b, conexiones
+que aparecen de muy bajo peso en las dos figuras anteriores.
+De la misma forma que la linea más pesada de la figura \ref{Jacard}
+puede deberse a un número muy bajo de registros, lo mismo puede
+suceder aquí, y no debemos de confiar en estos valores hasta no 
+corroborar con mayores datos. Este criterio podría, tal vez, 
+revelarnos conexiones discretas, sin inferencias de peso sobre 
+las diferentes regiones, pero para ello necesitaríamos muestras
+con mayores datos del GD. Afortunadamente el problema del procesamiento
+de los datos para buscar pares de ecos ya se encuentra bastante 
+más avanzado, y podemos analizar juegos de datos mucho mayores en menor
+tiempo, así que el problema consiste ahora en encontrar mejores
+métodos para detectar actividad espontánea en el giro dentado. Por
+otra parte, aquí no aparecen considerados otro tipo de respuestas
+diferentes al potencial de acción como eco. 
+
+Con propósitos comparativos, mostramos una gráfica 
+(ver fig. \ref{RandomGraph})
+que representa
+una conexión aleatorea típica entre ambos conjuntos, respetando
+la distribución de los intervalos entre disparos. Esta gráfica
+contiene la información de los \emph{ecos} si fueran 
+coincidencias casuales debidos simplemente a los diversos compases
+manejados por los disparos entre neuronas. Como se puede observar,
+su topología es notoriamente distinta de las anteriores. 
+Otro posible criterio de normalización del número de ecos sería,
+tal vez, en usar una familia de dichas gráficas como ``peso normal''
+entre conexiones. Para establecer la validez de esto habría que trabajar un
+poco aún. 
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\textwidth]{ConexionesAleatoreas01.png}
+\caption{ Ecos aleatorios obtenidos mediante mezcla de intervalos,
+respetando el número total y la distribución de éstos. Esta gráfica
+es el promedio de 1000 gráficas obtenidas mediante este procedimiento
+y muestra una posible ``conexión casual'' que podríamos usar como
+forma de normalización. Observese que el centro de CA3a sigue 
+mostrando una alta conectividad, pero esta vez con casi todo GD. 
+}\label{RandomGraph}
+\end{figure}
+
+
+
+
+\end{document}

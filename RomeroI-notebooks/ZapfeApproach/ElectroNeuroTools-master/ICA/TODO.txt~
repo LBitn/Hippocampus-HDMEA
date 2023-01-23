@@ -1,0 +1,11 @@
+Herreras, plática 20170308
+================================
+
+
+* Podemos hacer discriminación espacial.
+* Va a haber traslape de generadores por similitud
+* ICA funciona "explicando" la variancia de las señales originales.
+* Si un "generador" tiene demasiada variancia, acapara la "explicación".
+* Traslape temporal de las señales agrupa generadores: no podemos
+distinguir generadores que tengan casi la misma respuesta, aunque
+haya desface.

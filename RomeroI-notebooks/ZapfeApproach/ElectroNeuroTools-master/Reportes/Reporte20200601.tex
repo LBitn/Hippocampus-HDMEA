@@ -1,0 +1,649 @@
+\documentclass[10pt]{article}
+
+%\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{amsmath}
+%\usepackage[spanish]{babel}
+
+\usepackage{graphicx}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{hyperref}
+
+
+\setmainfont[Ligatures=TeX]{Droid Serif}
+
+\newcommand{\Jd}{\mathbf{J}}
+\newcommand{\EF}{\mathbf{E}}
+\newcommand{\cond}{\boldsymbol{\sigma}}
+\DeclareMathOperator{\diver}{div}
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\iqr}{iqr}
+
+
+\title{Entropy, Symbolization and Mutual Information \\
+Teorical-Numerical Dissertation during the Quarentine}
+\author{ W. P. Karel Zapfe}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+Electroneurophysiology is strongly based on the measurement and characterization of electrical signals given by live neurons, either in vitro or in vivo. This signal is often recorded as an array of voltage measurements, done at precise high frequencies. Along the years, the sampling and precision of these measurements have increased by several orders of magnitude. Moreover, the capacity to sample hundreds or thousands of sites simultaneously exists now, sometimes spread over macroscopic areas, such as the whole scalp of the head, or concentrated in very small areas, as in MMEAs (Massive Micro-electrode arrays). Such signals are very rich, and many efforts are done to characterize their complexity. A common approach is to estimate the Entropy of the signal, and from there to use other derived measures such as Mutual Information or Transfer Entropy to search for causality between different channels.
+
+It turns out that the very first step is sometimes done routinely and without much thought to fundamentals, and, as we shall show here, can lead to inconsistent or plain wrong results. As we shall see, Entropy in the sense of Shannon is often wrongly used, either due to conceptual laxity or by error in the numerical algorithmic design. On the other hand, slightly different calculations of Entropy may point different "complexities" in the data. As we are most interested in causality tests, we may focus on the most consistent and robust definition of Entropy. It appears that the definition of Entropy in the sense of Shannon is a tricky thing, and Shannon himself made an erroneous extrapolation of his discrete definition that is wrong. Even though this has been pointed since 1957 by E.T. Jaynes \cite{Jaynes1957}, and adequate alternatives have been shown to exist
+\cite{Kullback1951, Schroeder2004}, researchers routinely take the incorrect definition as granted, without realising that does not converge nor has the same interpretation \cite{Jaynes1968}. On the other side, the correct use of Shannon's Entropy involves
+a process of symbolization of the continuous data, and this introduces further
+questions. As we shall see in the following, some symbolization alter drastically
+the Entropy estimation, thus forcing the researchers to take a sort of Occam's approach:
+take the simplest one, even if it looks really crude, so that artifacts given
+by the model do not play a large role. A lot of recent work in Neuroscience take this
+path, at a very extreme level, encoding the neurophysiological signals in
+only two signs, above or below a threshold. This can be done on the electric potential field, separating putative spikes from absence of spikes, or in a  more
+focused manner, such as taking the sign of
+the difference of the signals, as in \cite{Steuer2004}, or on
+the time domain, if the inter-spike interval is larger or below a certain value,
+as in \cite{Steuer2001}.
+
+In this report we shall explore the difficulties of trying to establish the
+Entropy of a continuous LFP signal, and we shall explore a symbolic approach based
+on the decomposition of the signals on the CSD representation. We shall also explore
+the notion of block entropy and apply it to this symbolization. Finally we shall
+see if those measurements can be used to produce adequate estimations of the
+Mutual Information and Transfer Entropy, so that we can explore their
+usability as causality tests.
+
+
+
+\section{Shannon Entropy}
+
+
+Shannon Entropy was devised as a measure of the complexity of a message encoded in discrete symbols. This is very important because its strict definition works very well in the case that the symbolization is given, but it fails ( spectacularly one may say ) if one takes instead a possible continuum of symbols, or one imposes another encoding on the symbols. Claude Shannon himself wrongly stated that the continuous case was a limit form
+of his original definition \cite{Shannon1948}, and although this was corrected
+by subsequent researchers in the 50's and 60's, the error still persists in statements
+that claim, as an example, that ``the entropy of the Normal distribution is equal
+to the log of the standard deviation'', as for example the Wikipedia article on
+Normal Distribution and the references therein \cite{WikiNormal}. 
+
+
+Let us remember Shannon's definition. Suppose that we have a set of discrete symbols, i.e. , a series of separated, well defined values, which could be letters, digits, or any other symbol of such a kind. For simplicity we represent them as numbers, so $n$ discrete symbols would be $\{1, 2, \ldots n \}$. We call such a set an alphabet. Suppose that we have a random process that picks one by one these symbols and gives us a string of them. Such a string would be called a "message". Now let us suppose that the process is ergodic, that means, a very long "message" would be a good representation of the probabilities of the process that picks the symbols. In such a case the process would eventually be able to produce all the possible messages that those symbols permit, and their frequency's would represent the probabilities of the random process. If we knew precisely the probabilities $P$ of every symbol $s_j$, the entropy would be:
+\begin{equation}\label{eqDiffEnt}
+  H=-\sum_{j=1}^n P(s_j) \log (P (s_j))
+\end{equation}
+The base of the logarithm is usually taken as two, in which case the Entropy has as units the bit. In that case it can be interpreted as the average number of binary option question one has to make to guess symbol correctly.  A change of base of the logarithm is simply a change of units. We shall call this definition and only this one Shannon's Entropy.
+We may not have the knowledge of the $P(s_j)$ directly, so we must infer them from the messages that we sample, and by doing so we may say that we are measuring the Entropy of the messages and not of the process. This has to be taken into account if the messages are not "random enough".
+
+Shannon, in his original paper, stated that the same idea could be done by extending it to continuous distributions:
+\begin{equation}
+H=-\int p(x) \log (p(x)) d x
+\end{equation}
+for a random continuous variable and a probability distribution $p(x)$. It turns out that the limit does not converge. One can make some algebraic tricks to make it converge, but that would affect the interpretation. The fact that this looks identical to the Thermodynamic Entropy definition gives a false sense of legitimacy. Edwin T. Jaynes \cite{Jaynes1957}  made a rigorous critique of this confusion and showed how a true relationship between Thermodynamic and Shannon's Entropy can be found. Sometimes this formula is
+labeled ``Differential Entropy'', but it has a hidden assumption.
+The Differential Entropy would correspond to the Kullback-Leibler divergence
+with respect to a homogeneous probability, and that only makes sense if one
+has a finite support!
+Our way out of this incorrect usage shall be to honestly accept that real measurements
+of LFP do indeed have finite support into our derivations. That actually is more sensible than taking the analytical formula without criticism and is according to the nature of real experimental data. This approach leads to the so called ``Limiting density
+of Discrete Points'' \cite{Jaynes1968, Jaynes2003}, a special case of the
+Kullback-Leibler Divergence \cite{Kullback1959}.
+
+
+\section{Binarization of the Data and Symbolic Sequences}
+
+Authors take at face value the equation \ref{eqDiffEnt} and try to make a numerical approximation to it. This is achieved first by making an heuristic estimate to the distribution function of continuous data. The usually approach is first to make an histogram of the data. By so doing one is actually making a symbolization of the data ( called binarization, from bins, not from binary digits ), and if one applies Shannon's formula, then one is actually calculating the entropy of the distribution of symbols from that specific binarization. One could optimistically think that such a calculation could be a reasonable approach to a limiting form of the Differential Entropy, but that is not the case. A simple example suffices.
+If one has a finite set of symbols ( we shall call it an alphabet from now on), such as $\{1,2\ldots,n\}$ and a random process that picks them with equal probabilities, the Shannon Entropy either of the process or of the distribution that dictates the process is 
+$$
+H=-\sum \frac{1}{n} \log \frac{1}{n} = \log n
+$$
+A simple proof shows that this has the highest entropy for a process with $n$ symbols, taking for example the entropy of one symbol to be higher or lower than the rest, and normalizing the others so that they are still equiprobable. Then It can be shown that this probability function has lower entropy. 
+
+If one takes a continuous interval over the real numbers, say, from $a$ to $b$, and one puts a flat probability distribution function over it, the Differential Entropy will be:
+$$
+H=-\int \frac{1}{b-a} \log \frac{1}{b-a} d x = \log (b-a)
+$$
+This somehow parallels the discrete Shannon entropy for equiprobable process, but it hides a trap.
+
+Suppose that we want to obtain the above by means of sampling a process, and that we put the data in bins of
+equal length. After enough samples we may have a reasonable approach to an even distribution, but we are careful
+and don't take that for granted, so we approach the integral by a numerical discrete sum. Let us suppose that we have $n$ bins, and that each one turned to be more or less equally filled with data. Say that each bin holds 1/n of the total amount of data. Then we would obtain Shannon's entropy for $n$ symbols, $H=\log n$. If we would try instead to make a Riemann sum over the expression $ p(x) \log (p(x))$ we end with another result: The bins have length $\Delta x= (b-a)/n$, and $p(x)=1/(b-a)$. 
+the Integral form by the next sum:
+$$
+\tilde{H}=-\sum p_n(x) \log p_n(x) \Delta x \\
+=-\sum \frac{1}{b-a}\log (\frac{1}{b-a}) \frac{b-a}{n} \\
+= \log (b-a)
+$$
+The Riemann sum in this case converges trivially to the Integral form. But the numerical sampling does not! In fact, if we refine the partition of our data (and have enough data to spread them over the new bins), the Shannon Entropy begins to grow, as $\log n$. What is going on? Two things. The most overlooked is that $p(x)$ *is not* a probability: it needs to be multiplied by $dx$ to become one. The other problem is that  Shannon's entropy is the entropy of \emph{the partition itself}. The partition induces probabilities (discrete ones) and is a symbolization of the data. The Riemann Integral does not depend on the partition, as long as it converges uniformly. The Entropies do not match each other because they are measuring different things.
+
+People familiar with Ergodic Theory shall recognize that these kind of measures, which depend on the partition, are useful, but one cannot omit stating the partition when using them. Moreover, given that a partition is a symbolization, how can we chose the right partition? We cannot approach with experimental data the Riemann sum, except on very simple examples. 
+In the following we shall use some experimental data
+to drive the point.
+
+\section{ First Experimental Numerical Example }
+
+We shall show some calculations derived from using naively the mentioned approach. Our data comes from electrophysiological experiments, recorded with the BioCAM form BrainWave, a MMEA that has 4095 recording electrodes over an area of 2.27mm by 2.27 mm. An extra
+electrode is used as ground value. In the data shown below, the data sampling rate was of 7.022 KHz.
+
+\subsection{The binarization process: different criteria}
+
+There are different rules to select adequate bin sizes in one-dimensional data. The rules try to make the histogram "smooth enough" and without gaps. We are compelled to do so, because we assume that the phenomena that produces our data is continuous in nature, and therefore, it induces a continuous probability density function. We are looking for a histogram that captures the general shape of this pdf. If the bins are to narrow, we may end up with many empty bins, or many bins with just one data point inside it. If they are too big they may not look like the shape of the underlying distribution.
+
+Below we compare three  methods that produce different bin sizes for the same data.
+The Freedman and Diaconis rule \cite{FD1981}, takes as ruler the interquantile
+range. This makes the criterion stable with respect to outliers. The exact expression
+is
+\begin{equation}
+  l_{FD}=2 \iqr / \sqrt[3]{N},
+\end{equation}
+where $\iqr$ is the interquantile range and $N$ is the number of data entries.
+A very similar one is Scott's rule \cite{Scott1979}:
+\begin{equation}
+  l_{S}=3.49 \sigma / \sqrt[3]{N},
+\end{equation}
+where $\sigma$ is the standard deviation. If the data behaves more or less like a
+Gaussian, it gives a good bin size.
+We also use the ``square root'' rule, in which we use as many data bins as the
+square root of the number of data, a usual rule of thumb for obtaining histograms.
+Also we set up an "heuristic" bin size, in which we do not take into account anything of the sample, but we simply pick a bin size, and set up a range. In our case the range is from $-2000 \mu V$ to $2000 \mu V$, and bin size of $4.7 \mu V$.
+
+After obtaining histograms for each channel using each of the criteria above, we
+calculate Shannon's Entropy on each channel. In the figure \ref{entrocomp} we compare
+the results. 
+\begin{figure}
+  \includegraphics[width=0.9\textwidth]{ComparaEntropias01.png}
+  \caption{Comparison of Shannon's Entropy of the same data, but
+    different binning. The criteria produce qualitatively different results.}
+  \label{entrocomp}
+\end{figure}
+
+
+\subsection{Discussion of the Entropies with different bin sizes criteria}
+
+Inspecting the above figures, it shall be obvious that Shannon's Entropy depends highly on the partition of the range of data. The different color maps don't differ only in scale: they behave qualitatively in contrary ways. Both the Scott and the Square Root show the opposite behaviour as the Freed-Diaconis and the Heuristic fixed method. In the former higher entropy is on the noise channels, the later have higher entropy on the very active CA3 region and their neighbourhood (we discuss the count-map method at the end). Why is that and what does it mean?
+
+Let us recant some properties of Shannon Entropy. In a finite alphabet, higher entropies imply a flatter distribution. If all the symbols have the same probability, we get the maximum entropy. Also, a distribution with more symbols tends to also have a higher entropy, unless the symbols have very different probabilities. The different criteria for obtaining the optimal bin size take into account that there may be a continuous distribution underneath it, so we are optimizing in search of it. But every channel produces a different bin size. Scott and Square root methods are very sensible to outliers, (the second one is actually dependent solely on the extrema, that is, the more outliers of them all), so they tend to produce larger bins. If the channel is active, we end with some bins that are large enough to contain all noise contribution and others that contain the activity. On the other hand,the noisy channels produce smaller bins, and the distribution of noise tend to be more homogeneous, like a truncated Gaussian. This will produce a higher entropy, as we have more bins, with a relatively flatter distribution.
+
+In the Freed Diaconis method, we use the interquantile range as a ruler, so it is more stable in presence of outliers. That makes the bin size more consistent across channels, and therefore, the active channels tend to have a larger spread of probabilities over more or less the same alphabet, giving more Entropy to channels with more diverse signals. The heuristic criterion behaves more like this, as we use the exact same bin size and number of bins for all channels. 
+
+It turns out to be that histograms that are optimized to find a continuous distribution are inconsistent to estimate the Shannon Entropy, and this is rightly so: the Differential Entropy is \emph{not} the limit of Shannon's entropy, so that any continuous distribution can not induce a consistent discrete entropies that converge to it. 
+
+This gives us the reason to explore our true limiting partition. Our apparatus has an intrinsic discrete alphabet: the measurements are given in integer multiples of $2.014 \mu V$, so our symbols are actually those discrete values of the electric Voltage. The count-map function gives us an histogram of those discrete values. The entropy thus calculated is qualitatively similar to the Freed Diaconis Criterion, but with higher values, as it maximizes the symbols. Moreover, it also avoids misplacing measurements in the same basket, leaving other symbols empty- this is the correct alphabet for measuring the Entropy of
+the signal: is consistent across channels and it minimizes our assumptions. But it shall
+not generalize to more complex measures, such as Mutual Information or
+Transfer Entropy, as we shall see below.
+
+\subsection{Digression: using countmap to discover numerical artifacts on
+  the data}
+
+When using the countmap method, we obtain a frequency histogram of discrete values.
+This is so because the apparatus gives us discrete values, it is the nature
+of any experiment to have finite resolution. The BioCam in this data has a
+minimal resolution of exactly $\Delta V=2.01416015625 \mu V $.
+When plotting the frequency
+of each value we end up with a figure as seen in fig, \ref{histocountmap1}.
+Using a coarser binning to produce the histogram would have made us miss
+this effect, or at least made it more difficult to discover. 
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.65\textwidth]{histoconcorazones01.png}
+    \end{center}
+ \caption{Absolute frequencies of the discrete values of all active channels.
+   Some values clearly deviate from the statistic, which is apparently
+   Gaussian. These atypical values seem to be more or less
+   evenly spaced, indicated by red marks here.}\label{histocountmap1}
+\end{figure}
+
+The spacing of the suspicious values near the center seems to be
+around $12 \Delta V \approx 25 \mu V$, but other differences appear.
+There seems no sensible way of how to deal with these values, because
+substituting them randomly could alter the statistical properties of the
+signal. Nevertheless we can ignore them when calculating the Entropy
+by the countmap method, as the other values give a well defined shape
+of the Probability Function. Given that the weird behavior is less
+detectable on the edges of the Gaussian, we may only eliminate those
+near the center. A larger range graph is presented on the figure
+\ref{histocountmap2}.
+
+
+\begin{figure}
+  \begin{center}
+ \includegraphics[width=0.85\textwidth]{histoconcorazones02.png}   
+  \end{center}
+ 
+ \caption{Broader view of the same data as figure \ref{histocountmap2}.
+   A very suspicious irregularity is seen, but is very difficult to
+ quantify it.}
+ \label{histocountmap2}   
+\end{figure}
+
+In contrast, a histogram would smooth those strange values, making it
+difficult to detect. In the figure \ref{histoscott01} we show the
+effect of using the Scott's Method for the histogram. As can be seen,
+the ``bad values'' are much more difficult to spot, and the
+histogram looks really weird. Any further method that we apply over such
+probabilistic calculation will have unreliable or false effects. This reveals
+the necessity to be very very strict with the Histograms that we calculate.
+
+\begin{figure}
+  \begin{center}
+  \includegraphics[width=0.65\textwidth]{histoscottbuenos01.png}  
+  \end{center}
+    \caption{The same data as on previous figures but binned with Scott's method.}
+  \label{histoscott01}
+\end{figure}
+
+Let us inspect the data a bit more. How do those values look on the trace of
+the signal?
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.95\textwidth]{trazosospechos01.png}
+  \end{center}
+  \caption{An exemplary trace with the suspicious values marked. Note that
+  many occur on local maxima or minima.}
+  \label{trazomarcas01}
+\end{figure}
+
+In the figure \ref{trazomarcas01} we can see that the strange values occur often
+at turning points in the data, marking some characteristic oscillation of the noise.
+This is clearly an artifact of the electrodes measuring the potential, as they
+seem more prone to round of to certain values at the moment in which the
+potential changes sign of its temporal derivative. Although a denoising filter may
+help us to clean those values, I suspect that other artifacts may accumulate and
+alter the value of the Entropy.
+
+
+\section{Higher dimensional and causality measures}
+
+We have established that the method of counting the discrete values of
+the measured LFP is the one that gives a trustworthy estimation of the
+probability function. In some sense, it is a good representative
+of the probabilities of the \emph{measured values} of the data.
+As a side effect, it also helps us to reveal numerical artifacts
+on the data. Without a reliable measure of the Probabilities
+we cannot  calculate causality functions, such as Mutual Information and
+Transfer Entropy, which are our true aim.
+Let us recall the definition of the first measure. Let us say that
+$y$ is a result of the random process $Y$ and $x$ of the random
+process $X$ (for simplicity in the notation we shall identify
+the process with its encoding alphabet, and from now on we shall
+restrict ourselves to discrete process). Mutual Information
+between process $Y$ and $X$ is given by \cite{Cover1991}:
+\begin{equation}
+  I(X;Y)=\sum_{x \in X} \sum_{y \in Y} P(x,y) \log \frac{P(x,y)}{P(x)P(y)}
+\end{equation}
+where $P(y,x)$ is the probability of the joint event and the other are
+individual probabilities. Here is where our problem grows in dimensionality.
+These joint probabilities have as domain a Cartesian product of the
+separated spaces $X$ and $Y$. If one has $n$ symbols in one, and
+$m$ symbols in the other, the joint space alphabet would have $ n \times m$ 
+symbols.
+Could we use the countmap method for such calculations?
+The answer is no. The problem is that the probabilities of joint events
+decrease as a power of the number of events that we are measuring: the data
+points get diluted in a higher dimensional space. We are seeing
+discrete events that are sampled from a process that has around 1000 symbols.
+They appear to be more or less normally distributed, with a standard deviation
+of around 12 symbols. So around the central 50 symbols we have 95 percent of all
+events (the 68-95-99 rule of Gaussian distributions).
+In a very rough Fermi approximation these symbols could be thought of being
+equiprobable. If we measure the joint probability of two channels,
+the appearance of a certain pair
+of symbols in those ranges is around 1/2500. We have around 2000 samples in
+the example experiment. That means that we are going to observe each pair
+at most once, which makes a very poor statistic indeed.
+If that were not bad enough,
+the central symbols account mostly for the background and thermal noise.
+Those are the more probable pairs of symbols that we are going to see: the
+ones corresponding to spikes are very rare, and to see
+two correlated spikes is going to be an extremely rare event with this
+resolution and number of samples.
+
+
+To illustrate this, we shall select two exemplary channels and
+determine the joint distribution of their symbols. We select channels from
+the very active CA3 region. Channels labeled $A=[50,28]$ and $B=[60,35]$ have both
+around 40 putative spikes. We shall plot the joint distribution of events,
+$P(X_A, X_B)$ in the figure \ref{histopAB}.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{histopAB.png}
+  \end{center}
+  \caption{Frequency of the order pair of values for Channels $A$ and $B$.
+    Both axis are in $\mu V$.  The color indicates the frequency of each pair
+  of values.}
+  \label{histopAB}
+\end{figure}
+
+Most of the values in the plot are zero. Some of them are 1, and the peak of
+the distribution is exactly at zero, with 10 occurrences of the event $(0,0)$.
+This could be highly disappointing: the only probable correlated occurrences are
+just noise. On closer inspection we find some valuers that show possible correlation
+beyond the noise center. The pair of values $(215.5 \mu V, 88.6 \mu V)$ occurs twice.
+This is still very poor but maybe it could point to something. 
+
+
+\section{Symbolization strategies}
+
+The problem with the histograms is that we induce a certain partition of the
+data, and there it is a certain degree of arbitrariness. We have also seen
+that partitions that are too fine would be useless for the higher dimensional
+measures. We shall test some symbolization strategies that do not depend
+on the exact values of the data, as we have also tested that some of these
+values may be unreliable due to measurement artifacts.
+Steuer \emph{et al.} \cite{Steuer2004} used a two symbol system based on
+the finite time derivative of the signal. I shall use the same basic idea
+but with three symbols, using $1$ for increasing signal, $0$ for stationary, and
+$-1$ for decreasing signal.
+
+\begin{figure}
+  \centering
+  \begin{subfigure}[b]{0.49\textwidth}
+    \includegraphics[width=1.0\textwidth]{entropia2s01.png}
+  \end{subfigure}
+   \begin{subfigure}[b]{0.49\textwidth}
+    \includegraphics[width=1.0\textwidth]{histo2s01.png}
+  \end{subfigure}
+   \caption{The entropy for 3 symbols over all channels  and its histogram. The later was done using only the putative active channels. No discernible features are visible,
+     except the unusable channels, that have zero entropy. Compare with figure
+     \ref{entrocomp}. }
+   \label{entro2s01}
+\end{figure}
+
+In the figure \ref{entro2s01} we show the results of this symbolization procedure.
+As one can see, there is no range and therefore no contrast between the
+active channels and the inactive ones. This symbolization is not adequate. The
+noise, which varies rapidly between increasing and decreasing signals, drowns
+out all features of neuronal activity when reduced to such a simple characteristic.
+Steuer \emph{et al.} do not provide clues of the time step they used, but the caveat
+is there. I propose to extend the alphabet in the following manner.
+Instead of considering one time step, which is a sampling step of the BrainWave
+BioCAM, we shall use time windows that are of the order of magnitude of physiological
+events, around 1ms. In each window we shall calculate the sums of the signs
+of the differences, that is, sum the signs of the former symbolization. The new symbols
+will be a measure of how much was moving the signal in the positive or negative
+direction, discredited in reasonable amounts. If a window contains mostly noise,
+the sum will be near zero. Otherwise it shall depart notably from zero
+in a window which encompasses the polarization or depolarization of a neuron. A window
+may encompass $n$ frames, so the alphabet shall range from $-n$ to $n$, having
+$2n+1$ symbols. We shall choose the $n$ value as the ones which provides the
+higher contrast between entropies, that is, the largest range of entropies between
+active and inactive channels. The largest spread of entropy values ignoring the
+unusable channels appears at $n=8$, which at this sampling rate is a little longer
+than one millisecond. This could be a good symbolic alphabet for obtaining the
+Mutual Information, although it is still quite large with 17 symbols. 
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.85\textwidth]{comparasumaentropias01.png}
+    \end{center}
+  \caption{Comparison of the summed symbol entropies. Each image corresponds
+    to summing over the stated number of symbols on the header.}
+  \label{compsumentro}
+\end{figure}
+
+In the figure  \ref{h8sim} we
+show the distribution of symbols for the sum over 8 frames, ranging from
+$-16$ to $+16$. The distribution seems consistent across channels, having a
+gross normal appearance with richer structure therein.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=3.0in]{histogramas_8simbolos.png}
+  \caption{Histogram for two channels on the putative active Area, coordinates indicated in the legend. Compare with figure \ref{entro2s01}.}
+  \label{h8sim}
+\end{figure}
+
+
+\section{Block Entropy}
+
+Another caveat, often overlooked, is that Entropy of an array of symbols is invariant to ordering. One could in principle regard a signal as a sampling of random variables, reorder them, and obtain the same distribution, and thus, the same entropy. As an example, we could take every letter, punctuation mark and space of this paragraph, garble them into nonsense, and claim that they have the same Entropy as the original paragraph, and therefore, the same Information, which is as much nonsense as the random letters. But actually this is done implicitly in a lot of numerical estimations of Entropy. In the last section
+I proposed adding the symbols of a certain time window to obtain a richer symbolization,
+and thus describe a larger set of messages. There is more detailed version
+of this approach. The idea is to regard finite succession of symbols as
+higher order symbols, in a larger alphabet, a vocabulary in some sense. The entropy
+that one obtains calculating $n$ symbol words is called ``n-block Entropy''.
+This measure of entropy does not converge as we take larger words. As we have
+established, Shannon's Entropy grows as the logarithm of the size of the
+alphabet, or in this case, the vocabulary. If the signal is rich in patterns, and
+long enough, many words shall appear. What it is done here is to establish
+an average entropy increases per new symbol. If Shannon's Entropy for the $n$ block
+vocabulary is denoted $H_n$, the average increase in entropy for each new symbol
+will be:
+\begin{equation}
+    h_n=(H_{n+1}-H_n)    
+\end{equation}
+This quantity converges under normal circumstances, and its limit is called
+the \emph{source entropy}. Inconveniently, it converges very slowly, so in principle
+we shall use very large words to obtain a good approximation. This becomes a
+problem, because we are constrained by the data set length to obtain adequate
+probabilities in the estimation of this entropy. Let us
+think that the data length is $M$ symbols
+long, and we are trying to establish $n$ word probabilities. It the alphabet
+contains $N$ different symbols, there are $N^n$ possible words. If they were
+equiprobable, in order to detect on average once each word, t
+he next relationship should hold:
+\begin{equation}
+  1 \approx M/(N^n)
+\end{equation}
+that means that to be marginally able to detect an arbitrary $n$ length word,
+$n$ shall be at most:
+\begin{equation}\label{eqequiprob01}
+  n < \log(M)/\log(N).
+\end{equation}
+or, equivalently, $ n < \log_N (M) $, that is, the logarithm of the length of
+the measured data in the base of the symbol alphabet size. In a concrete case,
+if we have $2000$ data points per channel, and I propose a three symbol
+alphabet, we cannot reliably measure probabilities beyond $n=7$. As a curious
+note, this is very close to the best case in the  ``summed'' symbol that
+I proposed on the last section. The similitude may derive in that
+the summed symbol is a ``compressed encoding'' of the word symbol, and that
+both may contain similar information, although on second looks,
+the summed symbol, especially if the range  of the sum is relative large, may
+encode as the same symbol very different signal segments, and the compression
+is not homogeneous. The quantity of words $W_3$ that add up exactly to $m$ using at most
+$n$ symbols chosen from the alphabet $S_3={-1,0,1}$ is
+\begin{equation}
+  W_3=\sum_{j=0}^\nu \frac{n!}{(m-n-2j)!(n+j)!j!}, 
+\end{equation}
+where $\nu$ is the integer part of $(n-)/2$ and represents the pairs of $+1$ and
+$-1$ that add up to zero and don't alter the sum. as an example we can calculate
+how many words are compressed in the 8 symbols sum for different values of $m$.
+\begin{center}
+  \begin{tabular}{ l | r }
+    $m$ & $W_3$ \\
+    \hline
+    0 & 1107 \\
+    1 & 1016 \\
+    2 & 784 \\
+    3 & 504 \\
+    4 & 266 \\
+    5 & 112 \\
+    6 & 36 \\
+    7 & 8 \\
+    8 & 1 \\
+    \hline
+  \end{tabular}
+\end{center}
+The most extreme case is the $m=0$, where there could be such dissimilar symbols
+compressed as the sequence $0,0,0,0,0,0,0,0$, a completely flat signal,
+and the sequence $-1,-1,-1,-1,+1,+1,+1,+1$, which could be a spike! It is interesting
+to note that even so, the entropy thus obtained is concentrated in the
+physiological
+expected areas, namely CA3. After some pondering, it turns out that
+the lousy compression is only effective if we perform the change of dictionary
+( the sum over windows) if we do not make a running window, but a time stepped
+window. The running window does not lose in general the ternary message, because
+after $n$ time steps, we have enough linear equations to recover the
+underlying signs. Therefore, the successive messages are not independent. They
+follow a very specific and strict succession, and that produces higher entropies,
+revealing the structure of the original complex message that is underlying to the
+encoding. Heuristically, that also could point out to the fact that
+the optimal summing window has 8 time frames, and the best block entropy
+that we can calculate is with 7 time frames.
+
+We should not be to hasty to regard the expanded and detailed vocabulary
+as the best symbolization strategy. As before, excess symbols may actually be a
+hindrance to a good interpretation of the entropy measure. Let us see the
+entropies from 1 to 6 symbols in the figure \ref{entro6symbs}.
+
+\begin{figure}
+  \includegraphics[width=0.8\textwidth]{comparaentrobloc01.png}
+  \caption{Block Entropies for words with three symbols from the
+    set $\{ -1, 0, 1 \}$. 
+  }\label{entro6symbs}
+\end{figure}
+
+A bit to the surprise and dismay of the author, the Block Entropy for this
+data provides less contrast (and therefore less information about the channels)
+than the sum of the symbol entropies. A plausible explanation is that the
+more detailed symbolic set flattens the distribution, making noisy and
+active channels more alike in this encoding. We shall test this numerically
+on the next figure, \ref{histo6simbols}. The histogram looks terribly
+messy and without any ordering, much in contrast with the one in figure
+\ref{h8sim} where a natural ordering seems to be present. Worse yet,
+the comparison with a noisy channel doesn't seem to yield any qualitative
+differences, but a sort of grouping of the probabilities that seem similar
+in both cases, thus indicating that this symbolization is better at
+describing the noise than the physiological signal. This vocabulary of 6
+symbol words is useless for our purposes for another reason: it is much
+more detailed than the actual values of the LFP as given by the machine!
+Remember that the machine would give us approximately around thousand different
+values. The 6 symbol word is an alphabet of in principle $3^6=729$ words,
+too many for the higher dimensional measures. In the actual data only
+around 230 such words appear. This is because after one word only a
+very similar word can appear, the way this encoding works induces
+a certain grammatical rule. It is only after 6 steps that a completely
+different word can appear, and so we can only have at most 333 words
+in this data set. There is then a mistake in the estimation of the longest
+word entropy that we did above. It turns out that in the derivation
+of equation \ref{eqequiprob01} I tacitly equated the quantity of symbols
+and words. The correct estimation is that the number of independent words
+can be at most $M/n$. Then the solution for the length of the
+word, $n$ is:
+\begin{equation}
+  n=\frac{W(M \log N)}{\log N},
+\end{equation}
+where $W(x)$ is Lambert's W function. In our case this gives approximately
+5 symbols long, giving us the possibility of having $2000/5=400$ independent
+words, and $3^5=243$ possible words. This opens the discussion for the next
+subtopic, which is the question of the possible followers for a certain symbol.
+That is called \emph{grammatical rules} in the context of symbolic dynamics.
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{\textwidth}
+  \includegraphics[width=0.8\textwidth]{histo6simbols.png}  
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\textwidth}
+  \includegraphics[width=0.8\textwidth]{histo6simbruido.png}  
+  \end{subfigure} 
+  \caption{Distribution for the 6 symbol words in an active
+    Channel. The labels are ordered numerically from
+    $(-1,-1, -1, -1,-1,-1)$ to $(1,1,1,1,1,1)$. In the above
+    plot the distribution for an active channel is shown. Below we see
+    a graphic for a noisy channel. 
+  }\label{histo6simbols}
+\end{figure}
+
+\subsection{Grammatical Rules}
+
+In the last section we saw that in a rich enough alphabet or vocabulary,
+not every succession of symbols is allowed.  The encoding is not truly
+ergodic, and this may be an artifact of the encoding or of the
+dynamic process itself. The rules that prohibit certain succession of signs
+are called grammatical rules. If the rules are an artifact of the encoding,
+it may be possible to find a larger symbol set that doesn't need such
+rules. For example, suppose that we use only two symbols, $0$ and $1$,
+and suppose that we are exploring larger and larger blocks of symbols of
+the message source.  If we are seeing  that at four symbols
+the sequence $1,1,1,1$ never appears, then it may be that
+there is a rule preventing the symbol $1$ to follow the
+(composite) symbol $1,1,1$. A better encoding would dispense of the
+symbol altogether, but in such an approach new rules keep on appearing as
+we study larger and larger messages. At the end, we should strive to
+understand why such symbols do not appear.
+
+\section{Mutual Information via summed symbols}
+
+Recalling that Mutual Information of two messages is defined as:
+\begin{equation}
+  I(X;Y)=\sum_{x \in X} \sum_{y \in Y} P(x,y) \log \frac{P(x,y)}{P(x)P(y)},
+\end{equation}
+Mutual Information has many advantages over other correlation measures, such
+as having precise interpretation about what a higher number means,
+in absolute terms \cite{Brenner2000}. The propossed symbolization makes the
+coarse graining thick enough that the joint probabilities ocurr with discernible
+frequency. For a test, we pick a channel well situated in the CA3 Area (Channel
+number [28,54]) and
+plot its M.I. against all other active channels. The result appears
+in the figure \ref{exMI1}.
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.45\textwidth}
+  \includegraphics[width=1\textwidth]{mutualinfoexample01.png}  
+  \end{subfigure}
+  ~
+   \begin{subfigure}[b]{0.45\textwidth}
+  \includegraphics[width=1\textwidth]{mutualinfoexample02.png}  
+  \end{subfigure}
+   \caption{Mutual Information with respect to channel [28,54]. In the
+     left figure, the color scale is adjusted to the M.I. value, while on
+     the right one is colored according to its \emph{ordering}. This exagerates
+     the contrast and makes it apparent the prescence of strata that have a
+   higher degree of M.I. than their neighbours. }
+  \label{exMI1}
+\end{figure}
+The figure shows interesting features. The closer channels show high degree
+of mutual information. That is to be expected, given that in a strong
+signal a lot gets recorded by many neighbouring electrodes. But the spread
+of the higher entropies does not follow a circular pattern but an oblong one,
+that sits where the stratum pyramidale is. And much more peculiar is the
+fact that we have a second, smaller spot of values above 0.15 that are
+sepparated from the first one and seem to be more or less parallel to these.
+This is a sign of higher mutual information that is not neighbouring. It could
+point to such sensitivity on the electrodes, that we are seeing the
+changes in potential produced almost simultaneously on different parts
+of the same cell, in their dendritic structures, far from the firing soma.
+Or it could be somethin else. We shall compare with other channels as
+centers of the M.I. in the figure \ref{variasMI}.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{comparami01.png}
+  \caption{A comparision of various Mutual Information with
+    respect to some pivot channel, indicated by a black circle. It is
+    interesenting to note that channels near CA3 str. pyr. show a higher degree
+    of shared information with the rest of the structure
+    than other nearby channels.}
+   \label{variasMI}
+\end{figure}
+We can see on the last figure that there are highly correlated channels ( in the
+sense of M.I.) within a particular patch that appears to be the stratum pyramidale of
+CA3, and a second patch that is around the stratum lucidum. They also have an
+above average M.I. with the rest of the active channels. It is important to notice
+that \emph{ this is still not a causality test}. We have only tested the mutual
+information taking all the messages as \emph{simultaneous sources}. The shared
+information in this case should not be interpreted as ``message from source
+A preforms a part of message from source B'', but as if both source A and B originate
+from a third, predating cause. In the next section we shall test the M.I.
+measure with a time delay, but for now let us explore this part a little more.
+
+We shall next test which are the channels that on average have
+the higher M.I. with the rest of the active channels. We plot the result in
+the figure bla bla.
+
+
+
+
+
+\bibliography{./BiblioReportes01}{}
+\bibliographystyle{plain}
+
+
+
+\end{document}
+

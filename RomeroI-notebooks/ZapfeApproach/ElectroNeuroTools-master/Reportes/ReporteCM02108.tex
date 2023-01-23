@@ -1,0 +1,272 @@
+\documentclass{article}
+
+
+\usepackage[utf8]{inputenc} 
+\usepackage[spanish]{babel}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{textcomp}
+
+
+\title{Reporte: Centro de Masa para potenciales evocados}
+
+
+\author{W. P. Karel Zapfe}
+
+
+
+\begin{document}
+
+\maketitle
+
+\section{Los Datos}
+
+Para llevar a cabo está parte del trabajo, se me proporcionaron
+los siguientes datos experimentales.
+Dos experimentos largos de estimulación ortodrómica y uno
+antidrómica. Cada experimento largo fue llevado a cabo
+en dos etapas, una etapa control y una etapa con biliculina.
+Cada etapa tiene estímulos de varios voltajes, en orden creciente,
+de 1V a 9V.
+El experimento antidrómico tiene una etapa control, una etapa con
+mefluoquina y una etapa con nbqx-apv. La sucesión de estímulos es la misma.
+Cada estímulo fue repetido 3 veces. He promediado los datos
+centrados en el pico del estímulo. 
+
+El segundo experimento ortodrómica resultó inútil para los propósitos
+de este análisis, dado que en todas las estimulaciones el número de
+canales saturados sobre la región de interés (de ahora en adelante ROI)
+era excesivo, y ofuscaban el cálculo densidad de fuentes de corriente
+(de ahora en adelante CSD), así que nos concentramos en el primer experimento.
+De ahí las estimulaciones con 5V y 6V resultaron tener el registro más
+limpio en condiciones de control, y la de 5V y 9V para la etapa
+con biliculina.
+
+El experimento antidrómico tuvo los mejores registros en 5V para control,
+y en 7V para ambas drogas. 
+
+\section{Análisis exploratorio}
+
+El primer paso para llevar a cabo el análisis de CSD-CM (Centro de Masa
+para Densidades de Fuentes de Corriente) es conocer la posición de
+los cuerpos anatómicos de interés en el registro, y simultáneamente,
+conocer cuantos y cuales electrodos muestran respuestas fisiológicas y
+cuales están saturados y resultan inútiles para nuestro propósito.
+Una umbralización de Otsu sobre la varianza de cada canal 1 ms después del
+estímulo nos da una indicación de posibles sedes para los somas de las neuronas.
+complementado con la lista de los electrodos que registraron actividad fisiológica, podemos establecer la posición de CA y GD sobre el MEA. Una foto
+podría ayudar de estar disponible, pero no cuento con ella, así que
+tendremos que descansar sobre los trazos fisiológicos y nuestro
+conocimiento de la forma de la rebanada a priori. Muestro
+los resultados así obtenidos para los casos analizados en la figura \ref{exploratorio},
+y una muestra de los trazos en canales activos en la figura \ref{trazosejemplo1}.
+Los datos encontrados son poco esperanzadores. La estimulación ortodrómica parece
+no haber causado mucho registro en GD, a diferencia de la antidrómica, en donde
+podemos apreciar actividad en ambas estructuras.
+
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{LFP_Promedio_est_con5-mapa.png}
+        \caption{Orto, Control, 5V}
+        \label{ocon5}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{LFP_Promedio_est_con6-mapa.png}
+        \caption{Orto, Control, 6V}
+        \label{ocon6}
+    \end{subfigure} \\
+ \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{LFP_Promedio_est_bic5-mapa.png}
+        \caption{Orto, Bic, 5V}
+        \label{ocon5}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{LFP_Promedio_est_bic9-mapa.png}
+        \caption{Orto, Bic,  9V}
+        \label{ocon6}
+    \end{subfigure} \\
+ \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{LFP_Promedio_310816_stim_antidromic5-mapa.png}
+        \caption{Anti, Control, 5V}
+        \label{ocon5}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{LFP_Promedio_310816_stim_antidromic_nbqx_apv7-mapa.png}
+        \caption{Anti, nbqxapv, 7V}
+        \label{ocon6}
+    \end{subfigure} \\
+    \caption{Análisis Exploratorio para los datos obtenidos,
+      se muestra un cuadro correspondiente a 2.58 ms después del estimulo,
+      en varios casos. Podemos ver que la orientación del experimento Antidrómico
+      es diferente (una reflexión horizontal, prácticamente) respecto al Ortodrómica.
+    }\label{exploratorio}
+\end{figure}
+
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.95\textwidth]{TrazosEjemplares_bic5.png}
+  \caption{Trazos ejemplares del conjunto de canales detectados como
+    activos automáticamente, usando el experimento de Biliculina a 5V, ortodrómica.}
+  \label{trazosejemplo1}
+\end{figure}
+
+
+
+\section{kCSD y Regularización de Tikhonov}
+
+Este tipo de experimento suele tener varios electrodos saturados, y pueden
+estar sobre o muy cerca de la ROI. Un cálculo de diferencia finita para
+obtener la CSD como hemos llevado a cabo anteriormente resulta muy inconveniente. Un solo electrodo ruidoso arruina a sus 8 vecinos en general, haciendo
+que perdamos una parte sustancial del registro. En cambio, un análisis
+de tipo inverso, tal como el kCSD \cite{Potworowski2011} nos da un resultado
+mucho más suave y claro, con el costo de mayor tiempo computacional y unas
+suposiciones extra. He decido implementar el proceso de kCSD para
+registros masivos tales como los que proporciona el BIOCAM, paralelizando
+sobre CPU el algoritmo, dado que es un problema trivialmente paralelizable.
+Contamos asimismo con una versión paralela en GPU mucho más veloz
+(desarrollada por Néstor Castillo para su tésis de licenciatura), pero
+que requiere tarjetas gráficas nVidia de buena calidad para ser usada.
+
+El kCSD requiere que hagamos una suposición razonable sobre
+la forma de la función fuente-pozo cerca de un electrodo. La forma especifica
+de la función no es importante mientras cumpla ciertas características
+de regularidad y vaya acorde con nuestro conocimiento de como se puede
+generar un espacio de funciones. He tomado como función modelo
+una función característica circular con un radio de
+media distancia inter electrodo (21 \textmu m). En los casos que he tratado,
+hasta ahora no parece haber diferencia considerable si cambiamos la
+función característica por una gaussiana o disminuimos o aumentamos el radio
+por un factor de dos, lo cual es una buena noticia, dado que quiere decir
+que nuestros resultados son estables frente a los supuestos que estamos haciendo.
+
+Los operadores del kCSD son dos: un operador normalmente designado por $K$ que representa
+la transformación del espacio de Fuentes al espacio de Voltajes, y un operador
+$\tilde{K}$ que representa la proyección de las fuentes sobre un espacio de funciones ideales del mismo espacio de fuentes (la base del espacio). El cálculo de estos operadores
+es la parte computacionalmente intensiva de la rutina, pero sólo tiene que hacer una vez
+por caso (i.e. por estímulo), dado que el cambio depende de cuales sean los electrodos
+inservibles en cada conjunto de datos.
+
+La concatenación directa de estos operadores presupone una señal ideal, sin ruido.
+En el mundo real la obtención del LFP es un proceso ruidos, en nuestro caso
+tenemos una razón de ruido a señal de aproximadamente 1/10.  Para disminuir el efecto
+del ruido en la aplicación del kCSDA se sobreestima la contribución de los canales
+vecinos ligeramente, de forma que el ruido del canal en cuestión quede
+aplacado por la suma de varias señales ligeramente diferentes. Encontrar
+la conveniente de aplacamiento requiere probar un parámetro sobre valores
+razonables y llevar a cabo validación cruzada.
+Valores muy bajos dan señales muy ruidosas, mientras que señales demasiado grandes
+suavizan en exceso la señal.
+Es bueno hacer la comparación contra un ejemplo donde podamos obtener la CSD
+por el método de diferencia finita, así que tengamos un ejemplo contra
+el cual comparar primero. He encontrado que un valor adecuado para el
+parámetro de regularización es 0.05. Los resultados para un ejemplo
+tomado de un pequeño recuadro de 24x24 electrodos se
+muestran el la figura \ref{regultik}.
+
+La regularización de Tikhinov basta hacerla una vez por cada nivel de
+ruido, es decir, si confiamos en que todos los experimentos evocados
+mantienen aproximadamente la misma razón ruido/señal, una vez
+bastará. Mas adelante podemos hacer una prueba más limpia.
+
+Una vez obtenido el parámetro adecuado, podemos obtener la CSD
+de cada conjunto de datos si ya contamos con los operadores
+$K$ y $\tilde{K}$.
+
+\begin{figure}[h]
+  \includegraphics[width=0.95\textwidth]{VarioskCSD03.png}
+  \caption{Prueba de regularización de Tikhonov}\label{regultik}
+\end{figure}
+
+
+\section{Componentes Disjuntos.}
+
+Obtenida la CSD del kCSDA, podemos empezar a separar los componentes disjuntos
+de pozos y fuentes. La rutina que se había utilizado anteriormente requirió
+un poco de ajuste, dado que las unidades arbitrarias del kCSDA reultan diferentes
+después de la regularización. He creado una función que toma como argumento
+un ``cero gordo'' alrededor del valor neutro de la CSD, y este debe
+ser ajustado respecto a la escala que tengamos. He encontrado que un valor
+de 0.01 veces el valor máximo de una fuente o un pozo es un buen criterio
+para separar los componentes. En las figuras \ref{cmcontrol} y \ref{cmbic}
+muestro
+ejemplos de componentes disjuntos para varios tiempos después del estimulo,
+con y sin biculina. Existe una regularidad en los componentes que permite
+discernir la punta de CA3. 
+
+\begin{figure}
+  \centering
+    \begin{subfigure}[b]{0.95\textwidth}
+        \includegraphics[width=\textwidth]{DisjointComponents_Evento_control-5-120.png}
+    \end{subfigure}
+    \\
+     \begin{subfigure}[b]{0.95\textwidth}
+        \includegraphics[width=\textwidth]{DisjointComponents_Evento_control-5-127.png}
+    \end{subfigure}
+     \\
+      \begin{subfigure}[b]{0.95\textwidth}
+        \includegraphics[width=\textwidth]{DisjointComponents_Evento_control-5-134.png}
+    \end{subfigure}
+      \\
+       \begin{subfigure}[b]{0.95\textwidth}
+        \includegraphics[width=\textwidth]{DisjointComponents_Evento_control-5-141.png}
+    \end{subfigure}
+       \caption{Componentes Disjuntos para varios momentos después del estímulo, condiciones
+         de control, ortodrómica, 5V}\label{cmcontrol}
+\end{figure}
+
+\begin{figure}
+  \centering
+    \begin{subfigure}[b]{0.95\textwidth}
+        \includegraphics[width=\textwidth]{DisjointComponents_Evento_bic-5-120.png}
+    \end{subfigure}
+    \\
+     \begin{subfigure}[b]{0.95\textwidth}
+        \includegraphics[width=\textwidth]{DisjointComponents_Evento_bic-5-127.png}
+    \end{subfigure}
+     \\
+      \begin{subfigure}[b]{0.95\textwidth}
+        \includegraphics[width=\textwidth]{DisjointComponents_Evento_bic-5-134.png}
+    \end{subfigure}
+      \\
+       \begin{subfigure}[b]{0.95\textwidth}
+        \includegraphics[width=\textwidth]{DisjointComponents_Evento_bic-5-141.png}
+    \end{subfigure}
+       \caption{Componentes Disjuntos para varios momentos después del estímulo, condiciones
+         con biculina, ortodrómica, 5V}\label{cmbic}
+\end{figure}
+
+\section{Trayectorias}
+
+Finalmente comparemos las trayectorias de Centros de Masa para el experimento ortodrómico
+a 5V en condiciones control y biculina. Esta representación puede develar mejor los cambios
+de acción grupales en las estructuras fisiológicas \ref{traymedreqs}.
+
+
+\begin{figure}
+  \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+      \includegraphics[width=\textwidth]{LFP_Promedio_est_con5-Tray-t-134-medreqs.png}
+        \caption{control}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[b]{0.45\textwidth}
+       \includegraphics[width=\textwidth]{LFP_Promedio_est_bic5-Tray-t-134-medreqs.png}
+       \caption{biculina}
+     \end{subfigure}
+     \caption{Trayectorias con requisitos de aceptación intermedios, esto es,
+       cuya longitud sea mayor a 8 cuadros (correspondiente a poco mas de 1ms) y
+       8 u.a. de densidad.}
+\end{figure}
+
+
+\end{document}
